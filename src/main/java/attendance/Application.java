@@ -1,6 +1,7 @@
 package attendance;
 
 import attendance.controller.AttendanceController;
+import attendance.domain.CampusTimeChecker;
 import attendance.exception.ExceptionHandler;
 import attendance.service.AttendanceService;
 import attendance.view.InputView;
@@ -13,7 +14,8 @@ public class Application {
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
         ExceptionHandler exceptionHandler = new ExceptionHandler(outputView);
-        AttendanceService attendanceService = new AttendanceService();
+        CampusTimeChecker campusTimeChecker = new CampusTimeChecker();
+        AttendanceService attendanceService = new AttendanceService(campusTimeChecker);
         AttendanceController attendanceController = new AttendanceController(inputView, outputView, exceptionHandler, attendanceService);
         try {
             attendanceController.process();

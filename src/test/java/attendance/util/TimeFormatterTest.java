@@ -3,6 +3,7 @@ package attendance.util;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,4 +62,17 @@ class TimeFormatterTest {
         // Then
     }
 
+    // private static final String TIME_FORMAT = "HH:mm";
+    @Test
+    @DisplayName("파싱2")
+    void 파싱2() {
+        // Given
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime endOfYear = LocalTime.parse("12:31", pattern);
+
+        // When
+        System.out.println(endOfYear);
+
+        // Then
+    }
 }

@@ -2,6 +2,7 @@ package attendance.controller;
 
 import attendance.domain.Command;
 import attendance.domain.CrewLogs;
+import attendance.dto.InformDto;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import attendance.exception.ExceptionHandler;
@@ -14,6 +15,7 @@ import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,11 +41,68 @@ public class AttendanceController {
         // 파일 읽기
         CrewLogs crewLogs = makeCrewLogs();
         // 기능 입력
-        LocalDateTime now = DateTimes.now();
-        outputView.showTitleWelcome(now);
-        Command command = Command.from(inputView.readFunction());
+        while (true) {
+            LocalDateTime now = DateTimes.now();
+            outputView.showTitleWelcome(now);
+            Command command = Command.from(inputView.readFunction());
+            processAttendance(now, command, crewLogs);
+            if (command == Command.QUIT) {
+                return;
+            }
+        }
+    }
 
+    private void processAttendance(final LocalDateTime now, final Command command, final CrewLogs crewLogs) {
+        if (command == Command.ATTENDANCE_CHECK) {
+            checkAttendance(now, crewLogs);
+        }
+        if (command == Command.ATTENDANCE_MODIFY) {
+            modifyAttendance();
+        }
+        if (command == Command.ATTENDANCE_CREW_LOG) {
+            checkCrewLog();
+        }
+        if (command == Command.ATTENDANCE_DANGER) {
+            checkDangerCrew();
+        }
+    }
 
+    private void checkDangerCrew() {
+
+    }
+
+    private void checkCrewLog() {
+    }
+
+    private void modifyAttendance() {
+
+    }
+
+    // 오늘은 12월 13일 금요일입니다. 기능을 선택해 주세요.
+    //1. 출석 확인
+    //2. 출석 수정
+    //3. 크루별 출석 기록 확인
+    //4. 제적 위험자 확인
+    //Q. 종료
+    //1
+    //
+    //닉네임을 입력해 주세요.
+    //이든
+    //등교 시간을 입력해 주세요.
+    //09:59
+    //
+    //12월 13일 금요일 09:59 (출석)
+    private void checkAttendance(final LocalDateTime now, final CrewLogs crewLogs) {
+        attendanceService.checkDate(now);
+        outputView.showRequestCheckNickname();
+        String nickname = inputView.readCheckNickname();
+        crewLogs.checkNickname(nickname);
+        outputView.showRequestCheckAttendanceTime();
+        LocalTime attendanceTime = inputView.readCheckAttendanceTime();
+        LocalDateTime todayTime = TimeParser.makeTodayTime(now, attendanceTime);
+        crewLogs.addLog(nickname, todayTime);
+        InformDto informDto = attendanceService.processAttendance(todayTime);
+        outputView.showInformCheck(informDto);
     }
 
     private CrewLogs makeCrewLogs() {
@@ -57,7 +116,7 @@ public class AttendanceController {
             }
             String name = values.getFirst();
             LocalDateTime attendanceTime = TimeParser.toLocalDateTime(values.getLast());
-            crewLogs.put(name, attendanceTime);
+            crewLogs.initialize(name, attendanceTime);
         }
         return crewLogs;
     }
