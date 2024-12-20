@@ -16,9 +16,14 @@ public class CrewLog {
     }
 
     public void add(final LocalDateTime time) {
-        if (logs.contains(time)) {
+        if (hasAlreadyExists(time)) {
             throw new CustomIllegalArgumentException(INVALID_DUPLICATE_ATTENDANCE);
         }
         logs.add(time);
+    }
+
+    public boolean hasAlreadyExists(final LocalDateTime input) {
+        return logs.stream()
+                .anyMatch(log -> log.toLocalDate().equals(input.toLocalDate()));
     }
 }
