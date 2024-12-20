@@ -1,5 +1,6 @@
 package attendance.controller;
 
+import attendance.domain.Command;
 import attendance.domain.CrewLogs;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
@@ -11,6 +12,7 @@ import attendance.util.StringParser;
 import attendance.util.TimeParser;
 import attendance.view.InputView;
 import attendance.view.OutputView;
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,11 @@ public class AttendanceController {
     public void process() {
         // 파일 읽기
         CrewLogs crewLogs = makeCrewLogs();
+        // 기능 입력
+        LocalDateTime now = DateTimes.now();
+        outputView.showTitleWelcome(now);
+        Command command = Command.from(inputView.readFunction());
+
 
     }
 

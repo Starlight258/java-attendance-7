@@ -5,13 +5,15 @@ import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
 import attendance.dto.MonthAttendanceDto;
 import attendance.dto.MonthTotalAttendanceDto;
+import attendance.util.TimeFormatter;
+import java.time.LocalDateTime;
 
 public class OutputView {
 
     private static final String LINE = System.lineSeparator();
 
     private static final String TITLE_WELCOME = """
-            오늘은 12월 %d일 %s요일입니다. 기능을 선택해 주세요.
+            오늘은 %s입니다. 기능을 선택해 주세요.
             1. 출석 확인
             2. 출석 수정
             3. 크루별 출석 기록 확인
@@ -46,8 +48,8 @@ public class OutputView {
     private static final String INFORM_DANGER_SUBJECT = "%s: 결석 %d회, 지각 %d회 (%s)";
 
     // 기능 1
-    public void showTitleWelcome() {
-        showln(TITLE_WELCOME);
+    public void showTitleWelcome(final LocalDateTime today) {
+        showln(format(TITLE_WELCOME, TimeFormatter.makeDateMessage(today)));
     }
 
     public void showRequestCheckNickname() {
