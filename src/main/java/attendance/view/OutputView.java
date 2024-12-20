@@ -1,11 +1,12 @@
 package attendance.view;
 
-import attendance.dto.DangerCrewsDto;
+import attendance.dto.CrewDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
 import attendance.dto.MonthTotalAttendanceDto;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OutputView {
 
@@ -44,7 +45,8 @@ public class OutputView {
 
     // 기능 4
     private static final String TITLE_DANGER_SUBJECT = "제적 위험자 조회 결과";
-    private static final String INFORM_DANGER_SUBJECT = "%s: 결석 %d회, 지각 %d회 (%s)";
+    private static final String INFORM_DANGER_SUBJECT = "- %s: 결석 %d회, 지각 %d회 (%s)";
+    private static final String NONE = "NONE";
 
     // 기능 1
     public void showTitleWelcome(final LocalDateTime today) {
@@ -130,13 +132,16 @@ public class OutputView {
                 .forEach(this::showln);
         showln(format(INFORM_TOTAL_LOG, dtos.attendanceCount(), dtos.lateCount(),
                 dtos.absentCount()));
+        if (dtos.subject().equals(NONE)) {
+            return;
+        }
         showln(format(INFORM_SUBJECT, dtos.subject()));
     }
 
     // 기능 4
-    public void showTitleDangerSubject(final DangerCrewsDto dtos) {
-        showln(TITLE_DANGER_SUBJECT);
-        dtos.dtos().stream()
+    public void showTitleDangerSubject(final List<CrewDto> dtos) {
+        showln(LINE + TITLE_DANGER_SUBJECT);
+        dtos.stream()
                 .map(dto -> format(INFORM_DANGER_SUBJECT, dto.name(), dto.absentCount(), dto.lateCount(),
                         dto.subjectType()))
                 .forEach(this::showln);

@@ -4,6 +4,7 @@ import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
 import attendance.exception.CustomIllegalArgumentException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -43,5 +44,9 @@ public class CrewLogs {
     public LocalDateTime modifyTime(final String nickname, final LocalDateTime todayTime) {
         CrewLog crewLog = getCrewLog(nickname);
         return crewLog.modify(todayTime);
+    }
+
+    public Map<String, CrewLog> getLogs() {
+        return Collections.unmodifiableMap(logs);
     }
 }

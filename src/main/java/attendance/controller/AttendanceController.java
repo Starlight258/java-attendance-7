@@ -1,6 +1,7 @@
 package attendance.controller;
 
 import attendance.domain.Command;
+import attendance.dto.CrewDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
 import attendance.dto.MonthTotalAttendanceDto;
@@ -12,6 +13,7 @@ import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public class AttendanceController {
 
@@ -52,12 +54,13 @@ public class AttendanceController {
             checkCrewLog(now);
         }
         if (command == Command.ATTENDANCE_DANGER) {
-            checkDangerCrew();
+            checkDangerCrew(now);
         }
     }
 
-    private void checkDangerCrew() {
-
+    private void checkDangerCrew(final LocalDateTime now) {
+        List<CrewDto> crewDtos = attendanceService.checkDangerCrew(now);
+        outputView.showTitleDangerSubject(crewDtos);
     }
 
     private void checkCrewLog(final LocalDateTime now) {
