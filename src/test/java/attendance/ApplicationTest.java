@@ -1,6 +1,7 @@
 package attendance;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -37,6 +38,26 @@ class ApplicationTest extends NsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR] 12월 14일 토요일은 등교일이 아닙니다."),
             LocalDate.of(2024, 12, 14).atStartOfDay()
+        );
+    }
+
+    @Test
+    void 운영시간_예외_테스트() {
+        assertNowTest(
+                () -> assertThatThrownBy(() -> run("1", "빙봉", "23:03"))
+                        .isInstanceOf(IllegalArgumentException.class)
+                        .hasMessageContaining("[ERROR] 캠퍼스 운영 시간에만 출석이 가능합니다."),
+                LocalDate.of(2024, 12, 13).atStartOfDay()
+        );
+    }
+
+    @Test
+    void 출석_중복_테스트() {
+        assertNowTest(
+                () -> assertThatThrownBy(() -> run("1", "빙봉", "09:03", "1", "빙봉", "10:03"))
+                        .isInstanceOf(IllegalArgumentException.class)
+                        .hasMessageContaining("[ERROR] 이미 출석을 확인하였습니다. 필요한 경우 수정 기능을 이용해 주세요."),
+                LocalDate.of(2024, 12, 13).atStartOfDay()
         );
     }
 

@@ -1,28 +1,18 @@
 package attendance.controller;
 
 import attendance.domain.Command;
-import attendance.domain.CrewLogs;
 import attendance.dto.InformDto;
-import attendance.exception.CustomIllegalArgumentException;
-import attendance.exception.ErrorMessage;
 import attendance.exception.ExceptionHandler;
 import attendance.service.AttendanceService;
-import attendance.util.AttendanceFileReader;
-import attendance.util.FileContentParser;
-import attendance.util.StringParser;
 import attendance.util.TimeParser;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
 
 public class AttendanceController {
 
-    private static final String DELIMITER = ",";
-    private static final int TOKEN_SIZE = 2;
     private final InputView inputView;
     private final OutputView outputView;
     private final ExceptionHandler exceptionHandler;
@@ -38,23 +28,20 @@ public class AttendanceController {
     }
 
     public void process() {
-        // 파일 읽기
-        CrewLogs crewLogs = makeCrewLogs();
-        // 기능 입력
         while (true) {
             LocalDateTime now = DateTimes.now();
             outputView.showTitleWelcome(now);
             Command command = Command.from(inputView.readFunction());
-            processAttendance(now, command, crewLogs);
+            processAttendance(now, command);
             if (command == Command.QUIT) {
                 return;
             }
         }
     }
 
-    private void processAttendance(final LocalDateTime now, final Command command, final CrewLogs crewLogs) {
+    private void processAttendance(final LocalDateTime now, final Command command) {
         if (command == Command.ATTENDANCE_CHECK) {
-            checkAttendance(now, crewLogs);
+            checkAttendance(now);
         }
         if (command == Command.ATTENDANCE_MODIFY) {
             modifyAttendance();
@@ -92,33 +79,17 @@ public class AttendanceController {
     //09:59
     //
     //12월 13일 금요일 09:59 (출석)
-    private void checkAttendance(final LocalDateTime now, final CrewLogs crewLogs) {
+    private void checkAttendance(final LocalDateTime now) {
         attendanceService.checkDate(now);
         outputView.showRequestCheckNickname();
         String nickname = inputView.readCheckNickname();
-        crewLogs.checkNickname(nickname);
+        attendanceService.checkNickname(nickname);
         outputView.showRequestCheckAttendanceTime();
         LocalTime attendanceTime = inputView.readCheckAttendanceTime();
         LocalDateTime todayTime = TimeParser.makeTodayTime(now, attendanceTime);
-        crewLogs.addLog(nickname, todayTime);
-        InformDto informDto = attendanceService.processAttendance(todayTime);
+        InformDto informDto = attendanceService.processAttendance(nickname, todayTime);
         outputView.showInformCheck(informDto);
     }
 
-    private CrewLogs makeCrewLogs() {
-        CrewLogs crewLogs = new CrewLogs(new HashMap<>());
-        List<String> inputs = AttendanceFileReader.readAttendances();
-        List<String> tokens = FileContentParser.removeHeaders(inputs);
-        for (String token : tokens) {
-            List<String> values = StringParser.parseByDelimiter(token, DELIMITER);
-            if (values.size() != TOKEN_SIZE) {
-                throw new CustomIllegalArgumentException(ErrorMessage.INVALID_FILE_FORMAT);
-            }
-            String name = values.getFirst();
-            LocalDateTime attendanceTime = TimeParser.toLocalDateTime(values.getLast());
-            crewLogs.initialize(name, attendanceTime);
-        }
-        return crewLogs;
-    }
 
 }

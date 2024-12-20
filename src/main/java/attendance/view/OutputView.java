@@ -62,7 +62,7 @@ public class OutputView {
 
     // "12월 %02d일 %s요일 %02d:%02d (%s)";
     public void showInformCheck(final InformDto dto) {
-        showln(format(INFORM_CHECK, dto.time(), dto.attendanceType()));
+        showln(LINE + format(INFORM_CHECK, dto.time(), dto.attendanceType()));
     }
 
     // 기능 2
