@@ -83,7 +83,7 @@ public class OutputView {
     //
     //12월 03일 화요일 10:07 (지각) -> 09:58 (출석) 수정 완료!
     public void showRequestModifyNickname() {
-        showln(REQUEST_MODIFY_NICKNAME);
+        showln(LINE + REQUEST_MODIFY_NICKNAME);
     }
 
     public void showRequestModifyDay() {

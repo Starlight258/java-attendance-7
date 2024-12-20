@@ -5,7 +5,7 @@ import attendance.exception.ErrorMessage;
 import attendance.util.AttendanceFileReader;
 import attendance.util.FileContentParser;
 import attendance.util.StringParser;
-import attendance.util.TimeParser;
+import attendance.util.TimeUtils;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +25,7 @@ public class Initializer {
                 throw new CustomIllegalArgumentException(ErrorMessage.INVALID_FILE_FORMAT);
             }
             String name = values.getFirst();
-            LocalDateTime attendanceTime = TimeParser.toLocalDateTime(values.getLast());
+            LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(values.getLast());
             crewLogs.initialize(name, attendanceTime);
         }
         return crewLogs;

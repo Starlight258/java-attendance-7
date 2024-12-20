@@ -3,7 +3,6 @@ package attendance.domain;
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
 import attendance.exception.CustomIllegalArgumentException;
-import attendance.exception.ErrorMessage;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,17 @@ public class CrewLogs {
     }
 
     public void addLog(final String name, final LocalDateTime time) {
-        if (logs.containsKey(name)) {
-            CrewLog crewLog = logs.get(name);
-            crewLog.add(time);
-            return;
-        }
-        throw new CustomIllegalArgumentException(ErrorMessage.INVALID_STATE);
+        CrewLog crewLog = getCrewLog(name);
+        crewLog.add(time);
+    }
+
+    private CrewLog getCrewLog(final String name) {
+        checkNickname(name);
+        return logs.get(name);
+    }
+
+    public LocalDateTime modifyTime(final String nickname, final LocalDateTime todayTime) {
+        CrewLog crewLog = getCrewLog(nickname);
+        return crewLog.modify(todayTime);
     }
 }

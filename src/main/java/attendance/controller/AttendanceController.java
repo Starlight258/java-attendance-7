@@ -2,9 +2,10 @@ package attendance.controller;
 
 import attendance.domain.Command;
 import attendance.dto.InformDto;
+import attendance.dto.ModifyDto;
 import attendance.exception.ExceptionHandler;
 import attendance.service.AttendanceService;
-import attendance.util.TimeParser;
+import attendance.util.TimeUtils;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
@@ -44,7 +45,7 @@ public class AttendanceController {
             checkAttendance(now);
         }
         if (command == Command.ATTENDANCE_MODIFY) {
-            modifyAttendance();
+            modifyAttendance(now);
         }
         if (command == Command.ATTENDANCE_CREW_LOG) {
             checkCrewLog();
@@ -61,8 +62,19 @@ public class AttendanceController {
     private void checkCrewLog() {
     }
 
-    private void modifyAttendance() {
-
+    private void modifyAttendance(final LocalDateTime now) {
+        outputView.showRequestModifyNickname();
+        String nickname = inputView.readNickname();
+        attendanceService.checkNickname(nickname);
+        outputView.showRequestModifyDay();
+        int day = inputView.readModifyDay();
+        LocalDateTime today = TimeUtils.toLocalDate(now, day);
+        attendanceService.checkModifyDate(now, today);
+        outputView.showRequestModifyTime();
+        LocalTime time = inputView.readTime();
+        LocalDateTime todayTime = TimeUtils.makeTodayTime(today, time);
+        ModifyDto modifyDto = attendanceService.modifyTime(nickname, todayTime);
+        outputView.showInformModify(modifyDto);
     }
 
     // 오늘은 12월 13일 금요일입니다. 기능을 선택해 주세요.
@@ -80,13 +92,13 @@ public class AttendanceController {
     //
     //12월 13일 금요일 09:59 (출석)
     private void checkAttendance(final LocalDateTime now) {
-        attendanceService.checkDate(now);
+        attendanceService.checkAttendanceDate(now);
         outputView.showRequestCheckNickname();
-        String nickname = inputView.readCheckNickname();
+        String nickname = inputView.readNickname();
         attendanceService.checkNickname(nickname);
         outputView.showRequestCheckAttendanceTime();
-        LocalTime attendanceTime = inputView.readCheckAttendanceTime();
-        LocalDateTime todayTime = TimeParser.makeTodayTime(now, attendanceTime);
+        LocalTime attendanceTime = inputView.readTime();
+        LocalDateTime todayTime = TimeUtils.makeTodayTime(now, attendanceTime);
         InformDto informDto = attendanceService.processAttendance(nickname, todayTime);
         outputView.showInformCheck(informDto);
     }

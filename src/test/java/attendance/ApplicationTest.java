@@ -44,7 +44,7 @@ class ApplicationTest extends NsTest {
     @Test
     void 운영시간_예외_테스트() {
         assertNowTest(
-                () -> assertThatThrownBy(() -> run("1", "빙봉", "23:03"))
+                () -> assertThatThrownBy(() -> run("1", "짱수", "23:03"))
                         .isInstanceOf(IllegalArgumentException.class)
                         .hasMessageContaining("[ERROR] 캠퍼스 운영 시간에만 출석이 가능합니다."),
                 LocalDate.of(2024, 12, 13).atStartOfDay()

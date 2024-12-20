@@ -2,12 +2,13 @@ package attendance.util;
 
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class TimeParser {
+public class TimeUtils {
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
     private static final String TIME_FORMAT = "HH:mm";
@@ -34,5 +35,9 @@ public class TimeParser {
     public static LocalDateTime makeTodayTime(final LocalDateTime today, final LocalTime time) {
         return LocalDateTime.of(today.getYear(), today.getMonthValue(), today.getDayOfMonth(),
                 time.getHour(), time.getMinute());
+    }
+
+    public static LocalDateTime toLocalDate(final LocalDateTime today, final int day) {
+        return LocalDate.of(today.getYear(), today.getMonthValue(), day).atStartOfDay();
     }
 }

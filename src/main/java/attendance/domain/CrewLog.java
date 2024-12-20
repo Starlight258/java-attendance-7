@@ -1,5 +1,6 @@
 package attendance.domain;
 
+import static attendance.exception.ErrorMessage.INVALID_DAY_FUTURE;
 import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
 
 import attendance.exception.CustomIllegalArgumentException;
@@ -25,5 +26,19 @@ public class CrewLog {
     public boolean hasAlreadyExists(final LocalDateTime input) {
         return logs.stream()
                 .anyMatch(log -> log.toLocalDate().equals(input.toLocalDate()));
+    }
+
+    public LocalDateTime findLog(final LocalDateTime input) {
+        return logs.stream()
+                .filter(log -> log.toLocalDate().equals(input.toLocalDate()))
+                .findFirst()
+                .orElseThrow(()->new CustomIllegalArgumentException(INVALID_DAY_FUTURE));
+    }
+
+    public LocalDateTime modify(final LocalDateTime todayTime) {
+        LocalDateTime log = findLog(todayTime);
+        logs.remove(log);
+        logs.add(todayTime);
+        return log;
     }
 }
