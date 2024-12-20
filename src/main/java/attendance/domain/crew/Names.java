@@ -1,4 +1,4 @@
-package attendance.domain;
+package attendance.domain.crew;
 
 import static attendance.exception.ErrorMessage.INVALID_CREW_NAMES;
 

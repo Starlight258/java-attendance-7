@@ -1,11 +1,11 @@
 package attendance.service;
 
-import attendance.domain.AttendanceType;
-import attendance.domain.CampusTimeChecker;
-import attendance.domain.CrewLog;
-import attendance.domain.CrewLogs;
-import attendance.domain.MonthLogProcessor;
-import attendance.domain.SubjectType;
+import attendance.domain.crew.AttendanceType;
+import attendance.domain.date.CampusTimeChecker;
+import attendance.domain.log.CrewLog;
+import attendance.domain.log.CrewLogs;
+import attendance.domain.log.MonthLogProcessor;
+import attendance.domain.crew.SubjectType;
 import attendance.dto.CrewDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;

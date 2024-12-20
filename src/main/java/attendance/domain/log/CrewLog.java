@@ -1,4 +1,4 @@
-package attendance.domain;
+package attendance.domain.log;
 
 import static attendance.exception.ErrorMessage.INVALID_DAY_FUTURE;
 import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;

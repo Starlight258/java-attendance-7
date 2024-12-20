@@ -1,7 +1,8 @@
-package attendance.domain;
+package attendance.domain.crew;
 
-import static attendance.domain.CampusOperationTime.운영시간;
+import static attendance.domain.campus.CampusOperationTime.운영시간;
 
+import attendance.domain.campus.CampusEducationTime;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import java.time.LocalDateTime;

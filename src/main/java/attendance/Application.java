@@ -1,9 +1,9 @@
 package attendance;
 
 import attendance.controller.AttendanceController;
-import attendance.domain.CampusTimeChecker;
-import attendance.domain.CrewLogs;
-import attendance.domain.Initializer;
+import attendance.domain.date.CampusTimeChecker;
+import attendance.domain.log.CrewLogs;
+import attendance.domain.initializer.Initializer;
 import attendance.service.AttendanceService;
 import attendance.view.InputView;
 import attendance.view.OutputView;

@@ -1,4 +1,4 @@
-package attendance.domain;
+package attendance.domain.date;
 
 import java.util.Arrays;
 

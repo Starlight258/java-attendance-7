@@ -1,6 +1,6 @@
 package attendance.controller;
 
-import attendance.domain.Command;
+import attendance.domain.command.Command;
 import attendance.dto.CrewDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;

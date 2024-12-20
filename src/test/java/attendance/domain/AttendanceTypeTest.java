@@ -1,5 +1,6 @@
 package attendance.domain;
 
+import attendance.domain.crew.AttendanceType;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;

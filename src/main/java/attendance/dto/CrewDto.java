@@ -1,7 +1,7 @@
 package attendance.dto;
 
-import attendance.domain.AttendanceType;
-import attendance.domain.SubjectType;
+import attendance.domain.crew.AttendanceType;
+import attendance.domain.crew.SubjectType;
 import java.util.Map;
 
 // - 빙티: 결석 3회, 지각 2회 (면담)

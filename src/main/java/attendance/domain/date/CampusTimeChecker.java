@@ -1,4 +1,4 @@
-package attendance.domain;
+package attendance.domain.date;
 
 import static attendance.exception.ErrorMessage.INVALID_ATTENDANCE_DAY;
 
@@ -21,18 +21,18 @@ public class CampusTimeChecker {
         }
     }
 
+    public List<Integer> getWeekday(LocalDateTime now) {
+        return IntStream.range(FIRST_DAY, now.getDayOfMonth())
+                .filter(day -> !isNotOperationDay(TimeUtils.makeThatDay(now, day)))
+                .boxed()
+                .toList();
+    }
+
     private boolean isNotOperationDay(final LocalDateTime localDate) {
         return Holiday.isHoliday(localDate.getDayOfMonth()) || isWeekend(localDate);
     }
 
     private boolean isWeekend(final LocalDateTime localDate) {
         return localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY;
-    }
-
-    public List<Integer> getWeekday(LocalDateTime now) {
-        return IntStream.range(FIRST_DAY, now.getDayOfMonth())
-                .filter(day -> !isNotOperationDay(TimeUtils.makeThatDay(now, day)))
-                .boxed()
-                .toList();
     }
 }

@@ -1,4 +1,4 @@
-package attendance.domain;
+package attendance.domain.command;
 
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;

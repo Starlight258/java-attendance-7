@@ -1,5 +1,6 @@
-package attendance.domain;
+package attendance.domain.log;
 
+import attendance.domain.crew.AttendanceType;
 import attendance.util.TimeUtils;
 import java.time.LocalDateTime;
 import java.util.Collections;
