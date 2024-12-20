@@ -10,6 +10,6 @@ public record ModifyDto(String previousTime, String previousType, String current
     public static ModifyDto of(LocalDateTime previousTime, LocalDateTime currentTime) {
         return new ModifyDto(TimeFormatter.makeDateTimeMessage(previousTime),
                 AttendanceType.getAttendanceType(previousTime).name(),
-                TimeFormatter.makeDateTimeMessage(currentTime), AttendanceType.getAttendanceType(currentTime).name());
+                TimeFormatter.makeTimeMessage(currentTime), AttendanceType.getAttendanceType(currentTime).name());
     }
 }

@@ -28,17 +28,24 @@ public class CrewLog {
                 .anyMatch(log -> log.toLocalDate().equals(input.toLocalDate()));
     }
 
-    public LocalDateTime findLog(final LocalDateTime input) {
+    public LocalDateTime findExistLog(final LocalDateTime input) {
         return logs.stream()
                 .filter(log -> log.toLocalDate().equals(input.toLocalDate()))
                 .findFirst()
-                .orElseThrow(()->new CustomIllegalArgumentException(INVALID_DAY_FUTURE));
+                .orElseThrow(() -> new CustomIllegalArgumentException(INVALID_DAY_FUTURE));
     }
 
     public LocalDateTime modify(final LocalDateTime todayTime) {
-        LocalDateTime log = findLog(todayTime);
+        LocalDateTime log = findExistLog(todayTime);
         logs.remove(log);
         logs.add(todayTime);
         return log;
+    }
+
+    public LocalDateTime findAllLog(final int input) {
+        return logs.stream()
+                .filter(log -> log.getDayOfMonth() == input)
+                .findFirst()
+                .orElse(null);
     }
 }

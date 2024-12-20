@@ -3,6 +3,7 @@ package attendance.controller;
 import attendance.domain.Command;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
+import attendance.dto.MonthTotalAttendanceDto;
 import attendance.exception.ExceptionHandler;
 import attendance.service.AttendanceService;
 import attendance.util.TimeUtils;
@@ -48,7 +49,7 @@ public class AttendanceController {
             modifyAttendance(now);
         }
         if (command == Command.ATTENDANCE_CREW_LOG) {
-            checkCrewLog();
+            checkCrewLog(now);
         }
         if (command == Command.ATTENDANCE_DANGER) {
             checkDangerCrew();
@@ -59,7 +60,12 @@ public class AttendanceController {
 
     }
 
-    private void checkCrewLog() {
+    private void checkCrewLog(final LocalDateTime now) {
+        outputView.showRequestLogNickname();
+        String nickname = inputView.readNickname();
+        attendanceService.checkNickname(nickname);
+        MonthTotalAttendanceDto monthTotalAttendanceDto = attendanceService.checkCrewLog(nickname, now);
+        outputView.showTotalLog(nickname, monthTotalAttendanceDto);
     }
 
     private void modifyAttendance(final LocalDateTime now) {
@@ -68,7 +74,7 @@ public class AttendanceController {
         attendanceService.checkNickname(nickname);
         outputView.showRequestModifyDay();
         int day = inputView.readModifyDay();
-        LocalDateTime today = TimeUtils.toLocalDate(now, day);
+        LocalDateTime today = TimeUtils.makeThatDay(now, day);
         attendanceService.checkModifyDate(now, today);
         outputView.showRequestModifyTime();
         LocalTime time = inputView.readTime();

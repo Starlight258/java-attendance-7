@@ -37,7 +37,7 @@ public class TimeUtils {
                 time.getHour(), time.getMinute());
     }
 
-    public static LocalDateTime toLocalDate(final LocalDateTime today, final int day) {
+    public static LocalDateTime makeThatDay(final LocalDateTime today, final int day) {
         return LocalDate.of(today.getYear(), today.getMonthValue(), day).atStartOfDay();
     }
 }

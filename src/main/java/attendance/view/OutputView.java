@@ -3,7 +3,6 @@ package attendance.view;
 import attendance.dto.DangerCrewsDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
-import attendance.dto.MonthAttendanceDto;
 import attendance.dto.MonthTotalAttendanceDto;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
@@ -124,15 +123,14 @@ public class OutputView {
         showln(REQUEST_LOG_NICKNAME);
     }
 
-    public void showTitleLog(final String name, final MonthAttendanceDto monthAttendanceDto,
-                             final MonthTotalAttendanceDto monthTotalAttendanceDto) {
+    public void showTotalLog(final String name, final MonthTotalAttendanceDto dtos) {
         showln(format(TITLE_LOG, name));
-        monthAttendanceDto.dtos().stream()
+        dtos.dtos().stream()
                 .map(dto -> format(INFORM_DAILY_LOG, dto.time(), dto.attendanceType()))
                 .forEach(this::showln);
-        showln(format(INFORM_TOTAL_LOG, monthTotalAttendanceDto.attendanceCount(), monthTotalAttendanceDto.lateCount(),
-                monthTotalAttendanceDto.absentCount()));
-        showln(format(INFORM_SUBJECT, monthTotalAttendanceDto.subject()));
+        showln(format(INFORM_TOTAL_LOG, dtos.attendanceCount(), dtos.lateCount(),
+                dtos.absentCount()));
+        showln(format(INFORM_SUBJECT, dtos.subject()));
     }
 
     // 기능 4

@@ -35,7 +35,7 @@ public class CrewLogs {
         crewLog.add(time);
     }
 
-    private CrewLog getCrewLog(final String name) {
+    public CrewLog getCrewLog(final String name) {
         checkNickname(name);
         return logs.get(name);
     }
