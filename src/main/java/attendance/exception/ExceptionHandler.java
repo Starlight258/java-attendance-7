@@ -8,7 +8,7 @@ public class ExceptionHandler {
 
     private final OutputView outputView;
 
-        public ExceptionHandler(final OutputView outputView) {
+    public ExceptionHandler(final OutputView outputView) {
         this.outputView = outputView;
     }
 

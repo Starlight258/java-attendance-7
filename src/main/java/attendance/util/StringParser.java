@@ -14,7 +14,7 @@ public class StringParser {
     private static final int CONTAINS_EMPTY = -1;
     private static final String BLANK = "";
 
-        private StringParser() {
+    private StringParser() {
     }
 
     public static int parseToInteger(final String input, final ErrorMessage message) {

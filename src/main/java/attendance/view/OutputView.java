@@ -159,4 +159,7 @@ public class OutputView {
         System.out.println(message);
     }
 
+    public void showBlank() {
+        showln("");
+    }
 }

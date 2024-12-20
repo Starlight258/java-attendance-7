@@ -10,8 +10,7 @@ public enum ErrorMessage {
     INVALID_DUPLICATE_ATTENDANCE("이미 출석을 확인하였습니다. 필요한 경우 수정 기능을 이용해 주세요."),
     INVALID_FILE_FORMAT("파일 형식이 잘못되었습니다"),
     INVALID_CREW_NAMES("크루 이름이 중복되었습니다"),
-    INVALID_STATE("유효하지 않은 상태입니다."),
-    ;
+    INVALID_STATE("유효하지 않은 상태입니다.");
 
     private final String message;
 

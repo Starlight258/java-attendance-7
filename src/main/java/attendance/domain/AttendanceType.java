@@ -32,8 +32,8 @@ public enum AttendanceType {
     }
 
     private static void checkOperationTime(final LocalTime time) {
-        if (time.equals(운영시간.getStartTime()) || time.equals(운영시간.getEndTime()) ||
-                (time.isAfter(운영시간.getStartTime()) && time.isBefore(운영시간.getEndTime()))) {
+        if (time.equals(운영시간.getStartTime()) || time.equals(운영시간.getEndTime())
+                || (time.isAfter(운영시간.getStartTime()) && time.isBefore(운영시간.getEndTime()))) {
             return;
         }
         throw new CustomIllegalArgumentException(ErrorMessage.INVALID_CAMPUS_OPERATION_TIME);
