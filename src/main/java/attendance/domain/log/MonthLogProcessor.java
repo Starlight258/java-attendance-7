@@ -4,10 +4,10 @@ import attendance.domain.crew.AttendanceType;
 import attendance.util.TimeUtils;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MonthLogProcessor {
 
@@ -18,11 +18,8 @@ public class MonthLogProcessor {
     }
 
     public Map<AttendanceType, Integer> getTotalCount() {
-        Map<AttendanceType, Integer> totalCountResult = new HashMap<>();
-        for (AttendanceType attendanceType : result.values()) {
-            totalCountResult.merge(attendanceType, 1, Integer::sum);
-        }
-        return totalCountResult;
+        return result.values().stream()
+                .collect(Collectors.toMap(key -> key, v -> 1, Integer::sum, LinkedHashMap::new));
     }
 
     private Map<LocalDateTime, AttendanceType> processMonth(final LocalDateTime now, final List<Integer> weekdays,
