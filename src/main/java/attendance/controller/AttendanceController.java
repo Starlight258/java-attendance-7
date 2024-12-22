@@ -95,5 +95,4 @@ public class AttendanceController {
         outputView.showInformCheck(informDto);
     }
 
-
 }

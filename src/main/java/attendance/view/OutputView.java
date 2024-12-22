@@ -31,7 +31,6 @@ public class OutputView {
     private static final String REQUEST_LOG_NICKNAME = "닉네임을 입력해 주세요.";
     private static final String TITLE_LOG = """
             이번 달 %s의 출석 기록입니다.
-            
             """;
     private static final String INFORM_DAILY_LOG = "%s (%s)";
     private static final String INFORM_TOTAL_LOG = """
@@ -39,7 +38,6 @@ public class OutputView {
             출석: %d회
             지각: %d회
             결석: %d회
-            
             """;
     private static final String INFORM_SUBJECT = "%s 대상자입니다.";
 
@@ -122,7 +120,7 @@ public class OutputView {
     //
     //면담 대상자입니다.
     public void showRequestLogNickname() {
-        showln(REQUEST_LOG_NICKNAME);
+        showln(LINE + REQUEST_LOG_NICKNAME);
     }
 
     public void showTotalLog(final String name, final MonthTotalAttendanceDto dtos) {
