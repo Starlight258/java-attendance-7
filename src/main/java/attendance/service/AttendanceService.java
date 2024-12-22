@@ -57,20 +57,22 @@ public class AttendanceService {
         return ModifyDto.of(previousTime, todayTime);
     }
 
-    public MonthTotalAttendanceDto checkCrewLog(final String nickname) {
+    public MonthTotalAttendanceDto checkCrewLog(final String nickname, final int day) {
         CrewLog crewLog = crewLogs.getCrewLog(nickname);
-        List<InformDto> dtos = crewLog.getLogs().values().stream()
+        List<InformDto> dtos = crewLog.getLogs().entrySet().stream()
+                .filter(entry -> entry.getKey() != day)
+                .map(Entry::getValue)
                 .map(value -> InformDto.of(value.getAttendanceTime(), value.getAttendanceType()))
                 .toList();
-        Map<AttendanceType, Integer> countMap = crewLog.getTotalCount();
+        Map<AttendanceType, Integer> countMap = crewLog.getTotalCount(day);
         return MonthTotalAttendanceDto.from(dtos, countMap);
     }
 
-    public List<CrewDto> checkDangerCrew() {
+    public List<CrewDto> checkDangerCrew(final LocalDateTime now) {
         List<CrewDto> dtos = new ArrayList<>();
         Map<String, CrewLog> logs = crewLogs.getLogs();
         for (Entry<String, CrewLog> entry : logs.entrySet()) {
-            Optional<CrewDto> crewDto = makeEachCrew(entry);
+            Optional<CrewDto> crewDto = makeEachCrew(entry, now.getDayOfMonth());
             crewDto.ifPresent(dtos::add);
         }
         sort(dtos);
@@ -101,8 +103,8 @@ public class AttendanceService {
         return dto.lateCount() % 3;
     }
 
-    private Optional<CrewDto> makeEachCrew(final Entry<String, CrewLog> entry) {
-        Map<AttendanceType, Integer> result = entry.getValue().getTotalCount();
+    private Optional<CrewDto> makeEachCrew(final Entry<String, CrewLog> entry, final int day) {
+        Map<AttendanceType, Integer> result = entry.getValue().getTotalCount(day);
         SubjectType subjectType = SubjectType.from(result);
         if (subjectType == SubjectType.NONE) {
             return Optional.empty();

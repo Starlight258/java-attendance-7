@@ -48,23 +48,23 @@ public class AttendanceController {
             modifyAttendance(now);
         }
         if (command == Command.ATTENDANCE_CREW_LOG) {
-            checkCrewLog();
+            checkCrewLog(now);
         }
         if (command == Command.ATTENDANCE_DANGER) {
-            checkDangerCrew();
+            checkDangerCrew(now);
         }
     }
 
-    private void checkDangerCrew() {
-        List<CrewDto> crewDtos = attendanceService.checkDangerCrew();
+    private void checkDangerCrew(final LocalDateTime now) {
+        List<CrewDto> crewDtos = attendanceService.checkDangerCrew(now);
         outputView.showTitleDangerSubject(crewDtos);
     }
 
-    private void checkCrewLog() {
+    private void checkCrewLog(final LocalDateTime now) {
         outputView.showRequestLogNickname();
         String nickname = inputView.readNickname();
         attendanceService.checkNickname(nickname);
-        MonthTotalAttendanceDto monthTotalAttendanceDto = attendanceService.checkCrewLog(nickname);
+        MonthTotalAttendanceDto monthTotalAttendanceDto = attendanceService.checkCrewLog(nickname, now.getDayOfMonth());
         outputView.showTotalLog(nickname, monthTotalAttendanceDto);
     }
 

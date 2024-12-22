@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class CrewLog {
@@ -47,8 +48,10 @@ public class CrewLog {
         return previousLog.getAttendanceTime();
     }
 
-    public Map<AttendanceType, Integer> getTotalCount() {
-        return logs.values().stream()
+    public Map<AttendanceType, Integer> getTotalCount(int day) {
+        return logs.entrySet().stream()
+                .filter(entry -> entry.getKey() != day)
+                .map(Entry::getValue)
                 .collect(
                         Collectors.toMap(AttendanceState::getAttendanceType, v -> 1, Integer::sum, LinkedHashMap::new));
     }
