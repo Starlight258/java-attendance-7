@@ -3,47 +3,67 @@ package attendance.domain.log;
 import static attendance.exception.ErrorMessage.INVALID_DAY_FUTURE;
 import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
 
+import attendance.domain.crew.AttendanceType;
 import attendance.exception.CustomIllegalArgumentException;
-import attendance.util.TimeUtils;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CrewLog {
 
-    private final Map<LocalDate, LocalDateTime> logs;
+    private final Map<Integer, AttendanceState> logs;
 
-    public CrewLog(final Map<LocalDate, LocalDateTime> logs) {
-        this.logs = new HashMap<>(logs);
+    public CrewLog(final LocalDateTime now, final List<Integer> weekdays) {
+        this.logs = initialize(now, weekdays);
+    }
+
+    private Map<Integer, AttendanceState> initialize(final LocalDateTime now, final List<Integer> weekdays) {
+        return weekdays.stream()
+                .collect(Collectors.toMap(key -> key,
+                        v -> AttendanceState.makeDefault(now, v),
+                        (x, y) -> y, LinkedHashMap::new));
     }
 
     public void add(final LocalDateTime input) {
-        if (contains(input)) {
+        if (isNotNone(input)) {
             throw new CustomIllegalArgumentException(INVALID_DUPLICATE_ATTENDANCE);
         }
-        logs.put(input.toLocalDate(), input);
+        logs.put(input.getDayOfMonth(), AttendanceState.makeAttendance(input));
     }
 
-    public LocalDateTime findExistLog(final LocalDateTime input) {
-        if (!contains(input)) {
+    public AttendanceState findExistLog(final LocalDateTime input) {
+        if (isNotExist(input)) {
             throw new CustomIllegalArgumentException(INVALID_DAY_FUTURE);
         }
-        return logs.get(input.toLocalDate());
+        return logs.get(input.getDayOfMonth());
     }
 
     public LocalDateTime modify(final LocalDateTime todayTime) {
-        LocalDateTime previousLog = findExistLog(todayTime);
-        logs.put(todayTime.toLocalDate(), todayTime);
-        return previousLog;
+        AttendanceState previousLog = findExistLog(todayTime);
+        logs.put(todayTime.getDayOfMonth(), AttendanceState.makeAttendance(todayTime));
+        return previousLog.getAttendanceTime();
     }
 
-    public LocalDateTime findAllLog(final LocalDateTime now, final int inputDay) {
-        LocalDate localDate = TimeUtils.makeDay(now, inputDay).toLocalDate();
-        return logs.getOrDefault(localDate, null);
+    public Map<AttendanceType, Integer> getTotalCount() {
+        return logs.values().stream()
+                .collect(
+                        Collectors.toMap(AttendanceState::getAttendanceType, v -> 1, Integer::sum, LinkedHashMap::new));
     }
 
-    private boolean contains(final LocalDateTime input) {
-        return logs.containsKey(input.toLocalDate());
+    private boolean isNotNone(final LocalDateTime input) {
+        int day = input.getDayOfMonth();
+        return logs.containsKey(day) && !logs.get(day).isNone();
+    }
+
+    private boolean isNotExist(final LocalDateTime input) {
+        int day = input.getDayOfMonth();
+        return !logs.containsKey(day);
+    }
+
+    public Map<Integer, AttendanceState> getLogs() {
+        return Collections.unmodifiableMap(logs);
     }
 }

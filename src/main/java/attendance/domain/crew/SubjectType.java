@@ -5,6 +5,7 @@ import attendance.exception.ErrorMessage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public enum SubjectType {
     NONE(0), 경고(2), 면담(3), 제적(6);
@@ -30,7 +31,14 @@ public enum SubjectType {
 
     public static SubjectType from(final Map<AttendanceType, Integer> result) {
         Integer lateCount = result.getOrDefault(AttendanceType.지각, 0);
-        Integer absentCount = result.getOrDefault(AttendanceType.결석, 0);
+        Integer absentCount = calculateAbsentCount(result);
         return SubjectType.from(lateCount, absentCount);
+    }
+
+    private static int calculateAbsentCount(final Map<AttendanceType, Integer> result) {
+        return result.entrySet().stream()
+                .filter(entry -> entry.getKey().isAbsent())
+                .mapToInt(Entry::getValue)
+                .sum();
     }
 }

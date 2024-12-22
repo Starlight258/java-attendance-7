@@ -2,6 +2,7 @@ package attendance.domain.log;
 
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
+import attendance.domain.date.CampusTimeChecker;
 import attendance.exception.CustomIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -16,13 +17,12 @@ public class CrewLogs {
         this.logs = new HashMap<>(logs);
     }
 
-    public void initialize(final String name, final LocalDateTime time) {
-        if (logs.containsKey(name)) {
-            CrewLog crewLog = logs.get(name);
-            crewLog.add(time);
-            return;
+    public void initialize(final LocalDateTime now, final String name, final LocalDateTime time) {
+        if (notContains(name)) {
+            logs.put(name, new CrewLog(now, CampusTimeChecker.getWeekday(now)));
         }
-        logs.put(name, new CrewLog(Map.of(time.toLocalDate(), time)));
+        CrewLog crewLog = logs.get(name);
+        crewLog.add(time);
     }
 
     public boolean notContains(final String nickname) {

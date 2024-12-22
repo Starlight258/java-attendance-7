@@ -7,7 +7,6 @@ import attendance.domain.crew.SubjectType;
 import attendance.domain.date.CampusTimeChecker;
 import attendance.domain.log.CrewLog;
 import attendance.domain.log.CrewLogs;
-import attendance.domain.log.MonthLogProcessor;
 import attendance.dto.CrewDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
@@ -58,23 +57,20 @@ public class AttendanceService {
         return ModifyDto.of(previousTime, todayTime);
     }
 
-    public MonthTotalAttendanceDto checkCrewLog(final String nickname, final LocalDateTime now) {
+    public MonthTotalAttendanceDto checkCrewLog(final String nickname) {
         CrewLog crewLog = crewLogs.getCrewLog(nickname);
-        List<Integer> weekdays = campusTimeChecker.getWeekday(now);
-        MonthLogProcessor monthLogProcessor = new MonthLogProcessor(now, weekdays, crewLog);
-        Map<LocalDateTime, AttendanceType> result = monthLogProcessor.getResult();
-        List<InformDto> dtos = result.entrySet().stream()
-                .map(entry -> InformDto.of(entry.getKey(), entry.getValue()))
+        List<InformDto> dtos = crewLog.getLogs().values().stream()
+                .map(value -> InformDto.of(value.getAttendanceTime(), value.getAttendanceType()))
                 .toList();
-        Map<AttendanceType, Integer> countMap = monthLogProcessor.getTotalCount();
+        Map<AttendanceType, Integer> countMap = crewLog.getTotalCount();
         return MonthTotalAttendanceDto.from(dtos, countMap);
     }
 
-    public List<CrewDto> checkDangerCrew(final LocalDateTime now) {
+    public List<CrewDto> checkDangerCrew() {
         List<CrewDto> dtos = new ArrayList<>();
         Map<String, CrewLog> logs = crewLogs.getLogs();
         for (Entry<String, CrewLog> entry : logs.entrySet()) {
-            Optional<CrewDto> crewDto = makeEachCrew(now, entry);
+            Optional<CrewDto> crewDto = makeEachCrew(entry);
             crewDto.ifPresent(dtos::add);
         }
         sort(dtos);
@@ -105,10 +101,8 @@ public class AttendanceService {
         return dto.lateCount() % 3;
     }
 
-    private Optional<CrewDto> makeEachCrew(final LocalDateTime now, final Entry<String, CrewLog> entry) {
-        List<Integer> weekdays = campusTimeChecker.getWeekday(now);
-        MonthLogProcessor monthLogProcessor = new MonthLogProcessor(now, weekdays, entry.getValue());
-        Map<AttendanceType, Integer> result = monthLogProcessor.getTotalCount();
+    private Optional<CrewDto> makeEachCrew(final Entry<String, CrewLog> entry) {
+        Map<AttendanceType, Integer> result = entry.getValue().getTotalCount();
         SubjectType subjectType = SubjectType.from(result);
         if (subjectType == SubjectType.NONE) {
             return Optional.empty();

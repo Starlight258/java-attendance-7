@@ -7,6 +7,7 @@ import attendance.util.AttendanceFileReader;
 import attendance.util.FileContentParser;
 import attendance.util.StringParser;
 import attendance.util.TimeUtils;
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +20,12 @@ public class Initializer {
     public CrewLogs makeCrewLogs() {
         CrewLogs crewLogs = new CrewLogs(new HashMap<>());
         List<String> attendances = readAttendances();
+        LocalDateTime now = DateTimes.now();
         for (String attendance : attendances) {
             List<String> tokens = parseByDelimiter(attendance);
             String name = tokens.getFirst();
             LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(tokens.getLast());
-            crewLogs.initialize(name, attendanceTime);
+            crewLogs.initialize(now, name, attendanceTime);
         }
         return crewLogs;
     }

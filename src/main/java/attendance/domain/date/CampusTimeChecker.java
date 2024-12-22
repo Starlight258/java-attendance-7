@@ -14,25 +14,25 @@ public class CampusTimeChecker {
 
     private static final int FIRST_DAY = 1;
 
-    public void checkDate(final LocalDateTime localDate) {
+    public static void checkDate(final LocalDateTime localDate) {
         if (isNotOperationDay(localDate)) {
             throw new CustomIllegalArgumentException(
                     INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(localDate)));
         }
     }
 
-    public List<Integer> getWeekday(LocalDateTime now) {
+    public static List<Integer> getWeekday(LocalDateTime now) {
         return IntStream.range(FIRST_DAY, now.getDayOfMonth())
                 .filter(day -> !isNotOperationDay(TimeUtils.makeDay(now, day)))
                 .boxed()
                 .toList();
     }
 
-    private boolean isNotOperationDay(final LocalDateTime localDate) {
+    private static boolean isNotOperationDay(final LocalDateTime localDate) {
         return Holiday.isHoliday(localDate.getDayOfMonth()) || isWeekend(localDate);
     }
 
-    private boolean isWeekend(final LocalDateTime localDate) {
+    private static boolean isWeekend(final LocalDateTime localDate) {
         return localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 }

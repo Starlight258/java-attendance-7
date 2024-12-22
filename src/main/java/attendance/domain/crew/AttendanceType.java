@@ -10,11 +10,15 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 public enum AttendanceType {
-    출석, 지각, 결석;
+    출석, 지각, 결석, NONE;
 
     public static AttendanceType getAttendanceType(final LocalDateTime attendanceTime) {
         checkOperationTime(attendanceTime.toLocalTime());
         return calculateType(attendanceTime);
+    }
+
+    public boolean isAbsent() {
+        return this == 결석 || this == NONE;
     }
 
     private static AttendanceType calculateType(final LocalDateTime attendanceTime) {
