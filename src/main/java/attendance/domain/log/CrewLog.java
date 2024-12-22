@@ -4,48 +4,46 @@ import static attendance.exception.ErrorMessage.INVALID_DAY_FUTURE;
 import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
 
 import attendance.exception.CustomIllegalArgumentException;
+import attendance.util.TimeUtils;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CrewLog {
 
-    private final List<LocalDateTime> logs;
+    private final Map<LocalDate, LocalDateTime> logs;
 
-    public CrewLog(final List<LocalDateTime> logs) {
-        this.logs = new ArrayList<>(logs);
+    public CrewLog(final Map<LocalDate, LocalDateTime> logs) {
+        this.logs = new HashMap<>(logs);
     }
 
-    public void add(final LocalDateTime time) {
-        if (hasAlreadyExists(time)) {
+    public void add(final LocalDateTime input) {
+        if (contains(input)) {
             throw new CustomIllegalArgumentException(INVALID_DUPLICATE_ATTENDANCE);
         }
-        logs.add(time);
-    }
-
-    public boolean hasAlreadyExists(final LocalDateTime input) {
-        return logs.stream()
-                .anyMatch(log -> log.toLocalDate().equals(input.toLocalDate()));
+        logs.put(input.toLocalDate(), input);
     }
 
     public LocalDateTime findExistLog(final LocalDateTime input) {
-        return logs.stream()
-                .filter(log -> log.toLocalDate().equals(input.toLocalDate()))
-                .findFirst()
-                .orElseThrow(() -> new CustomIllegalArgumentException(INVALID_DAY_FUTURE));
+        if (!contains(input)) {
+            throw new CustomIllegalArgumentException(INVALID_DAY_FUTURE);
+        }
+        return logs.get(input.toLocalDate());
     }
 
     public LocalDateTime modify(final LocalDateTime todayTime) {
-        LocalDateTime log = findExistLog(todayTime);
-        logs.remove(log);
-        logs.add(todayTime);
-        return log;
+        LocalDateTime previousLog = findExistLog(todayTime);
+        logs.put(todayTime.toLocalDate(), todayTime);
+        return previousLog;
     }
 
-    public LocalDateTime findAllLog(final int input) {
-        return logs.stream()
-                .filter(log -> log.getDayOfMonth() == input)
-                .findFirst()
-                .orElse(null);
+    public LocalDateTime findAllLog(final LocalDateTime now, final int inputDay) {
+        LocalDate localDate = TimeUtils.makeThatDay(now, inputDay).toLocalDate();
+        return logs.getOrDefault(localDate, null);
+    }
+
+    private boolean contains(final LocalDateTime input) {
+        return logs.containsKey(input.toLocalDate());
     }
 }

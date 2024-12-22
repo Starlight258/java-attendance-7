@@ -26,10 +26,10 @@ public class MonthLogProcessor {
     }
 
     private Map<LocalDateTime, AttendanceType> processMonth(final LocalDateTime now, final List<Integer> weekdays,
-                                                                final CrewLog crewLog) {
+                                                            final CrewLog crewLog) {
         Map<LocalDateTime, AttendanceType> temp = new LinkedHashMap<>();
         for (Integer weekday : weekdays) {
-            LocalDateTime time = crewLog.findAllLog(weekday);
+            LocalDateTime time = crewLog.findAllLog(now, weekday);
             if (time == null) {
                 temp.put(TimeUtils.makeThatDay(now, weekday), AttendanceType.결석);
                 continue;

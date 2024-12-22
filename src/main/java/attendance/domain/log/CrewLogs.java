@@ -5,7 +5,7 @@ import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 import attendance.exception.CustomIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CrewLogs {
@@ -13,7 +13,7 @@ public class CrewLogs {
     private final Map<String, CrewLog> logs;
 
     public CrewLogs(final Map<String, CrewLog> logs) {
-        this.logs = logs;
+        this.logs = new HashMap<>(logs);
     }
 
     public void initialize(final String name, final LocalDateTime time) {
@@ -22,7 +22,7 @@ public class CrewLogs {
             crewLog.add(time);
             return;
         }
-        logs.put(name, new CrewLog(List.of(time)));
+        logs.put(name, new CrewLog(Map.of(time.toLocalDate(), time)));
     }
 
     public boolean notContains(final String nickname) {
@@ -34,16 +34,16 @@ public class CrewLogs {
         crewLog.add(time);
     }
 
+    public LocalDateTime modifyTime(final String nickname, final LocalDateTime todayTime) {
+        CrewLog crewLog = getCrewLog(nickname);
+        return crewLog.modify(todayTime);
+    }
+
     public CrewLog getCrewLog(final String name) {
         if (notContains(name)) {
             throw new CustomIllegalArgumentException(INVALID_NICKNAME);
         }
         return logs.get(name);
-    }
-
-    public LocalDateTime modifyTime(final String nickname, final LocalDateTime todayTime) {
-        CrewLog crewLog = getCrewLog(nickname);
-        return crewLog.modify(todayTime);
     }
 
     public Map<String, CrewLog> getLogs() {
