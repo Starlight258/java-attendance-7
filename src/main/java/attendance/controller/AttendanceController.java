@@ -74,11 +74,11 @@ public class AttendanceController {
         attendanceService.checkNickname(nickname);
         outputView.showRequestModifyDay();
         int day = inputView.readModifyDay();
-        LocalDateTime today = TimeUtils.makeThatDay(now, day);
+        LocalDateTime today = TimeUtils.makeDay(now, day);
         attendanceService.checkModifyDate(now, today);
         outputView.showRequestModifyTime();
         LocalTime time = inputView.readTime();
-        LocalDateTime todayTime = TimeUtils.makeTodayTime(today, time);
+        LocalDateTime todayTime = TimeUtils.makeTime(today, time);
         ModifyDto modifyDto = attendanceService.modifyTime(nickname, todayTime);
         outputView.showInformModify(modifyDto);
     }
@@ -90,7 +90,7 @@ public class AttendanceController {
         attendanceService.checkNickname(nickname);
         outputView.showRequestCheckAttendanceTime();
         LocalTime attendanceTime = inputView.readTime();
-        LocalDateTime todayTime = TimeUtils.makeTodayTime(now, attendanceTime);
+        LocalDateTime todayTime = TimeUtils.makeTime(now, attendanceTime);
         InformDto informDto = attendanceService.processAttendance(nickname, todayTime);
         outputView.showInformCheck(informDto);
     }

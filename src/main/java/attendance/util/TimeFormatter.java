@@ -15,7 +15,7 @@ public class TimeFormatter {
         );
     }
 
-    // 12월 13일 금요일 09:59 (출석)
+    // 12월 13일 금요일 09:59
     public static String makeDateTimeMessage(final LocalDateTime time) {
         return time.format(
                 DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));

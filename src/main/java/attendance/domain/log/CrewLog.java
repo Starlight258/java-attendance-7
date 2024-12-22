@@ -39,7 +39,7 @@ public class CrewLog {
     }
 
     public LocalDateTime findAllLog(final LocalDateTime now, final int inputDay) {
-        LocalDate localDate = TimeUtils.makeThatDay(now, inputDay).toLocalDate();
+        LocalDate localDate = TimeUtils.makeDay(now, inputDay).toLocalDate();
         return logs.getOrDefault(localDate, null);
     }
 

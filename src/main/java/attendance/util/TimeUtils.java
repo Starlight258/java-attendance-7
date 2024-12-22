@@ -24,7 +24,6 @@ public class TimeUtils {
 
     public static LocalTime toLocalTime(final String text) {
         try {
-
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern(TIME_FORMAT);
             return LocalTime.parse(text, pattern);
         } catch (DateTimeParseException exception) {
@@ -32,12 +31,12 @@ public class TimeUtils {
         }
     }
 
-    public static LocalDateTime makeTodayTime(final LocalDateTime today, final LocalTime time) {
+    public static LocalDateTime makeTime(final LocalDateTime today, final LocalTime time) {
         return LocalDateTime.of(today.getYear(), today.getMonthValue(), today.getDayOfMonth(),
                 time.getHour(), time.getMinute());
     }
 
-    public static LocalDateTime makeThatDay(final LocalDateTime today, final int day) {
+    public static LocalDateTime makeDay(final LocalDateTime today, final int day) {
         return LocalDate.of(today.getYear(), today.getMonthValue(), day).atStartOfDay();
     }
 }

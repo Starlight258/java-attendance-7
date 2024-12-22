@@ -23,7 +23,7 @@ public class CampusTimeChecker {
 
     public List<Integer> getWeekday(LocalDateTime now) {
         return IntStream.range(FIRST_DAY, now.getDayOfMonth())
-                .filter(day -> !isNotOperationDay(TimeUtils.makeThatDay(now, day)))
+                .filter(day -> !isNotOperationDay(TimeUtils.makeDay(now, day)))
                 .boxed()
                 .toList();
     }

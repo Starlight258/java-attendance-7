@@ -18,17 +18,26 @@ public class Initializer {
 
     public CrewLogs makeCrewLogs() {
         CrewLogs crewLogs = new CrewLogs(new HashMap<>());
-        List<String> inputs = AttendanceFileReader.readAttendances();
-        List<String> tokens = FileContentParser.removeHeaders(inputs);
-        for (String token : tokens) {
-            List<String> values = StringParser.parseByDelimiter(token, DELIMITER);
-            if (values.size() != TOKEN_SIZE) {
-                throw new CustomIllegalArgumentException(ErrorMessage.INVALID_FILE_FORMAT);
-            }
-            String name = values.getFirst();
-            LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(values.getLast());
+        List<String> attendances = readAttendances();
+        for (String attendance : attendances) {
+            List<String> tokens = parseByDelimiter(attendance);
+            String name = tokens.getFirst();
+            LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(tokens.getLast());
             crewLogs.initialize(name, attendanceTime);
         }
         return crewLogs;
+    }
+
+    private List<String> parseByDelimiter(final String token) {
+        List<String> values = StringParser.parseByDelimiter(token, DELIMITER);
+        if (values.size() != TOKEN_SIZE) {
+            throw new CustomIllegalArgumentException(ErrorMessage.INVALID_FILE_FORMAT);
+        }
+        return values;
+    }
+
+    private List<String> readAttendances() {
+        List<String> inputs = AttendanceFileReader.readAttendances();
+        return FileContentParser.removeHeaders(inputs);
     }
 }

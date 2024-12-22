@@ -31,7 +31,7 @@ public class MonthLogProcessor {
         for (Integer weekday : weekdays) {
             LocalDateTime time = crewLog.findAllLog(now, weekday);
             if (time == null) {
-                temp.put(TimeUtils.makeThatDay(now, weekday), AttendanceType.결석);
+                temp.put(TimeUtils.makeDay(now, weekday), AttendanceType.결석);
                 continue;
             }
             temp.put(time, AttendanceType.getAttendanceType(time));
