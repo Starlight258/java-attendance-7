@@ -25,10 +25,8 @@ public class CrewLogs {
         logs.put(name, new CrewLog(List.of(time)));
     }
 
-    public void checkNickname(final String nickname) {
-        if (!logs.containsKey(nickname)) {
-            throw new CustomIllegalArgumentException(INVALID_NICKNAME);
-        }
+    public boolean notContains(final String nickname) {
+        return !logs.containsKey(nickname);
     }
 
     public void addLog(final String name, final LocalDateTime time) {
@@ -37,7 +35,9 @@ public class CrewLogs {
     }
 
     public CrewLog getCrewLog(final String name) {
-        checkNickname(name);
+        if (notContains(name)) {
+            throw new CustomIllegalArgumentException(INVALID_NICKNAME);
+        }
         return logs.get(name);
     }
 

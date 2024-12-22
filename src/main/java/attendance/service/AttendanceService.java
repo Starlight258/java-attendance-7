@@ -1,11 +1,13 @@
 package attendance.service;
 
+import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
+
 import attendance.domain.crew.AttendanceType;
+import attendance.domain.crew.SubjectType;
 import attendance.domain.date.CampusTimeChecker;
 import attendance.domain.log.CrewLog;
 import attendance.domain.log.CrewLogs;
 import attendance.domain.log.MonthLogProcessor;
-import attendance.domain.crew.SubjectType;
 import attendance.dto.CrewDto;
 import attendance.dto.InformDto;
 import attendance.dto.ModifyDto;
@@ -41,7 +43,9 @@ public class AttendanceService {
     }
 
     public void checkNickname(final String nickname) {
-        crewLogs.checkNickname(nickname);
+        if (crewLogs.notContains(nickname)) {
+            throw new CustomIllegalArgumentException(INVALID_NICKNAME);
+        }
     }
 
     public InformDto processAttendance(final String nickname, final LocalDateTime time) {
