@@ -39,7 +39,7 @@ public class CrewLog {
     public LocalDateTime modify(final LocalDateTime todayTime) {
         AttendanceState previousLog = findExistLog(todayTime);
         logs.put(todayTime.getDayOfMonth(), AttendanceState.makeAttendance(todayTime));
-        return previousLog.getAttendanceTime();
+        return previousLog.attendanceTime();
     }
 
     public Map<AttendanceType, Integer> getTotalCount(int day) {
@@ -47,7 +47,7 @@ public class CrewLog {
                 .filter(entry -> entry.getKey() != day)
                 .map(Entry::getValue)
                 .collect(
-                        Collectors.toMap(AttendanceState::getAttendanceType, v -> 1, Integer::sum, LinkedHashMap::new));
+                        Collectors.toMap(AttendanceState::attendanceType, v -> 1, Integer::sum, LinkedHashMap::new));
     }
 
     private boolean isNotNone(final LocalDateTime input) {

@@ -59,7 +59,7 @@ public class AttendanceService {
         List<InformDto> dtos = crewLog.getLogs().entrySet().stream()
                 .filter(entry -> entry.getKey() != day)
                 .map(Entry::getValue)
-                .map(value -> InformDto.of(value.getAttendanceTime(), value.getAttendanceType()))
+                .map(value -> InformDto.of(value.attendanceTime(), value.attendanceType()))
                 .toList();
         Map<AttendanceType, Integer> countMap = crewLog.getTotalCount(day);
         return MonthTotalAttendanceDto.from(dtos, countMap);
