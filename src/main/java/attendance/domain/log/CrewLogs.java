@@ -35,10 +35,6 @@ public class CrewLogs {
         crewLog.add(time);
     }
 
-    public void checkTime(final LocalDateTime time) {
-        campus.checkOperationTime(time.toLocalTime());
-    }
-
     public boolean notContains(final String nickname) {
         return !logs.containsKey(nickname);
     }
@@ -67,6 +63,10 @@ public class CrewLogs {
             throw new CustomIllegalArgumentException(
                     INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(date)));
         }
+    }
+
+    private void checkTime(final LocalDateTime time) {
+        campus.checkOperationTime(time.toLocalTime());
     }
 
     private List<Integer> getWeekday(LocalDateTime now) {

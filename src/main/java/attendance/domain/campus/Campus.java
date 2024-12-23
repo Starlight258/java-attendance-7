@@ -22,15 +22,15 @@ public class Campus {
         throw new CustomIllegalArgumentException(ErrorMessage.INVALID_CAMPUS_OPERATION_TIME);
     }
 
+    public boolean isNotOperationDay(final LocalDateTime localDate) {
+        return Holiday.isHoliday(localDate.getDayOfMonth()) || isWeekend(localDate);
+    }
+
     private boolean isNotOperationTime(final LocalTime time) {
         LocalTime startTime = LocalTime.of(START_HOUR, 0);
         LocalTime endTime = LocalTime.of(END_HOUR, 0);
         return time.equals(startTime) || time.equals(endTime)
                 || (time.isAfter(startTime) && time.isBefore(endTime));
-    }
-
-    public boolean isNotOperationDay(final LocalDateTime localDate) {
-        return Holiday.isHoliday(localDate.getDayOfMonth()) || isWeekend(localDate);
     }
 
     private boolean isWeekend(final LocalDateTime localDate) {
