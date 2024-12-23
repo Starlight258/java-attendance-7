@@ -1,9 +1,8 @@
 package attendance;
 
 import attendance.controller.AttendanceController;
-import attendance.domain.date.CampusTimeChecker;
-import attendance.domain.log.CrewLogs;
 import attendance.domain.initializer.Initializer;
+import attendance.domain.log.CrewLogs;
 import attendance.service.AttendanceService;
 import attendance.view.InputView;
 import attendance.view.OutputView;
@@ -28,9 +27,8 @@ public class Application {
     }
 
     private static AttendanceService makeService() {
-        CampusTimeChecker campusTimeChecker = new CampusTimeChecker();
         Initializer initializer = new Initializer();
         CrewLogs crewLogs = initializer.makeCrewLogs();
-        return new AttendanceService(crewLogs, campusTimeChecker);
+        return new AttendanceService(crewLogs);
     }
 }

@@ -1,5 +1,10 @@
 package attendance.domain.campus;
 
+import attendance.domain.date.Holiday;
+import attendance.exception.CustomIllegalArgumentException;
+import attendance.exception.ErrorMessage;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public enum CampusOperationTime {
@@ -17,15 +22,23 @@ public enum CampusOperationTime {
         this.endTime = endTime;
     }
 
-    public static LocalTime makeTime(int hour, int minute) {
+    public static void checkOperationTime(final LocalTime time) {
+        if (time.equals(운영시간.startTime) || time.equals(운영시간.endTime)
+                || (time.isAfter(운영시간.startTime) && time.isBefore(운영시간.endTime))) {
+            return;
+        }
+        throw new CustomIllegalArgumentException(ErrorMessage.INVALID_CAMPUS_OPERATION_TIME);
+    }
+
+    public static boolean isNotOperationDay(final LocalDateTime localDate) {
+        return Holiday.isHoliday(localDate.getDayOfMonth()) || isWeekend(localDate);
+    }
+
+    private static boolean isWeekend(final LocalDateTime localDate) {
+        return localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY;
+    }
+
+    private static LocalTime makeTime(int hour, int minute) {
         return LocalTime.of(hour, minute);
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
     }
 }

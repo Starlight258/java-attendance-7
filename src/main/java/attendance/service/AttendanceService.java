@@ -1,10 +1,11 @@
 package attendance.service;
 
+import static attendance.exception.ErrorMessage.INVALID_ATTENDANCE_DAY;
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
+import attendance.domain.campus.CampusOperationTime;
 import attendance.domain.crew.AttendanceType;
 import attendance.domain.crew.SubjectType;
-import attendance.domain.date.CampusTimeChecker;
 import attendance.domain.log.CrewLog;
 import attendance.domain.log.CrewLogs;
 import attendance.dto.CrewDto;
@@ -13,6 +14,7 @@ import attendance.dto.ModifyDto;
 import attendance.dto.MonthTotalAttendanceDto;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
+import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,22 +25,20 @@ import java.util.Optional;
 public class AttendanceService {
 
     private final CrewLogs crewLogs;
-    private final CampusTimeChecker campusTimeChecker;
 
-    public AttendanceService(final CrewLogs crewLogs, final CampusTimeChecker campusTimeChecker) {
+    public AttendanceService(final CrewLogs crewLogs) {
         this.crewLogs = crewLogs;
-        this.campusTimeChecker = campusTimeChecker;
     }
 
     public void checkAttendanceDate(final LocalDateTime date) {
-        campusTimeChecker.checkDate(date);
+        checkDate(date);
     }
 
     public void checkModifyDate(final LocalDateTime now, final LocalDateTime date) {
         if (date.toLocalDate().isAfter(now.toLocalDate())) {
             throw new CustomIllegalArgumentException(ErrorMessage.INVALID_DAY_FUTURE);
         }
-        campusTimeChecker.checkDate(date);
+        checkDate(date);
     }
 
     public void checkNickname(final String nickname) {
@@ -77,6 +77,13 @@ public class AttendanceService {
         }
         sort(dtos);
         return dtos;
+    }
+
+    private void checkDate(final LocalDateTime localDate) {
+        if (CampusOperationTime.isNotOperationDay(localDate)) {
+            throw new CustomIllegalArgumentException(
+                    INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(localDate)));
+        }
     }
 
     private void sort(final List<CrewDto> dtos) {
