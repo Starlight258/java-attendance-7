@@ -4,8 +4,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 public enum CampusEducationTime {
-    // 월요일 : 13:00~18:00
-    // 화~금요일 : 10:00~18:00
     교육시간_월(13, 18),
     교육시간_월제외(10, 18);
 

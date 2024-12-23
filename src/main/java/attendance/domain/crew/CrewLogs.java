@@ -1,4 +1,4 @@
-package attendance.domain.log;
+package attendance.domain.crew;
 
 import static attendance.exception.ErrorMessage.INVALID_ATTENDANCE_DAY;
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
@@ -9,7 +9,6 @@ import attendance.exception.CustomIllegalArgumentException;
 import attendance.util.TimeFormatter;
 import attendance.util.TimeUtils;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -108,9 +107,5 @@ public class CrewLogs {
                 .filter(day -> !campus.isNotOperationDay(TimeUtils.makeDay(now, day)))
                 .boxed()
                 .toList();
-    }
-
-    public Map<String, CrewLog> getLogs() {
-        return Collections.unmodifiableMap(logs);
     }
 }

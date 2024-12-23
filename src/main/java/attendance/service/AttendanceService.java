@@ -3,13 +3,13 @@ package attendance.service;
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
 import attendance.domain.attendance.AttendanceResult;
-import attendance.domain.crew.SubjectType;
-import attendance.domain.log.CrewLog;
-import attendance.domain.log.CrewLogs;
+import attendance.domain.crew.CrewType;
+import attendance.domain.crew.CrewLog;
+import attendance.domain.crew.CrewLogs;
 import attendance.dto.CrewDto;
 import attendance.dto.AttendanceDto;
 import attendance.dto.ModifyDto;
-import attendance.dto.MonthTotalAttendanceDto;
+import attendance.dto.TotalAttendanceDto;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import java.time.LocalDateTime;
@@ -52,18 +52,18 @@ public class AttendanceService {
         return ModifyDto.of(previousTime, todayTime);
     }
 
-    public MonthTotalAttendanceDto checkCrewLog(final String nickname, final int day) {
+    public TotalAttendanceDto checkCrewLog(final String nickname, final int day) {
         CrewLog crewLog = crewLogs.getCrewLog(nickname);
         List<AttendanceDto> dtos = convertToInformDtos(day, crewLog);
         AttendanceResult result = crewLog.makeResult(day);
-        return MonthTotalAttendanceDto.from(dtos, result);
+        return TotalAttendanceDto.from(dtos, result);
     }
 
     public List<CrewDto> checkDangerCrew(final LocalDateTime now) {
         Map<String, AttendanceResult> results = crewLogs.makeSortedResults(now.getDayOfMonth());
         return results.entrySet().stream()
                 .map(entry -> CrewDto.of(entry.getKey(), entry.getValue()))
-                .filter(dto -> !Objects.equals(dto.subjectType(), SubjectType.NONE.name()))
+                .filter(dto -> !Objects.equals(dto.subjectType(), CrewType.NONE.name()))
                 .toList();
     }
 

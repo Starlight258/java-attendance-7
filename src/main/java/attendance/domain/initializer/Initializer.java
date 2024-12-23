@@ -1,7 +1,7 @@
 package attendance.domain.initializer;
 
 import attendance.domain.campus.Campus;
-import attendance.domain.log.CrewLogs;
+import attendance.domain.crew.CrewLogs;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import attendance.util.AttendanceFileReader;

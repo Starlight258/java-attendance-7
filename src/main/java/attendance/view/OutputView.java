@@ -3,7 +3,7 @@ package attendance.view;
 import attendance.dto.CrewDto;
 import attendance.dto.AttendanceDto;
 import attendance.dto.ModifyDto;
-import attendance.dto.MonthTotalAttendanceDto;
+import attendance.dto.TotalAttendanceDto;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -82,7 +82,7 @@ public class OutputView {
         showln(LINE + REQUEST_LOG_NICKNAME);
     }
 
-    public void showTotalLog(final String name, final MonthTotalAttendanceDto dtos) {
+    public void showTotalLog(final String name, final TotalAttendanceDto dtos) {
         showln(format(TITLE_LOG, name));
         dtos.dtos().stream()
                 .map(dto -> format(INFORM_DAILY_LOG, dto.time(), dto.attendanceType()))

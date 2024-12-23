@@ -2,7 +2,7 @@ package attendance;
 
 import attendance.controller.AttendanceController;
 import attendance.domain.initializer.Initializer;
-import attendance.domain.log.CrewLogs;
+import attendance.domain.crew.CrewLogs;
 import attendance.service.AttendanceService;
 import attendance.view.InputView;
 import attendance.view.OutputView;

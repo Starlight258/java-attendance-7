@@ -4,7 +4,7 @@ import attendance.domain.command.Command;
 import attendance.dto.CrewDto;
 import attendance.dto.AttendanceDto;
 import attendance.dto.ModifyDto;
-import attendance.dto.MonthTotalAttendanceDto;
+import attendance.dto.TotalAttendanceDto;
 import attendance.service.AttendanceService;
 import attendance.util.TimeUtils;
 import attendance.view.InputView;
@@ -64,8 +64,8 @@ public class AttendanceController {
         outputView.showRequestLogNickname();
         String nickname = inputView.readNickname();
         attendanceService.checkNickname(nickname);
-        MonthTotalAttendanceDto monthTotalAttendanceDto = attendanceService.checkCrewLog(nickname, now.getDayOfMonth());
-        outputView.showTotalLog(nickname, monthTotalAttendanceDto);
+        TotalAttendanceDto totalAttendanceDto = attendanceService.checkCrewLog(nickname, now.getDayOfMonth());
+        outputView.showTotalLog(nickname, totalAttendanceDto);
     }
 
     private void modifyAttendance(final LocalDateTime now) {

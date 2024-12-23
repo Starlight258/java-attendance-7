@@ -1,4 +1,4 @@
-package attendance.domain.log;
+package attendance.domain.crew;
 
 import static attendance.exception.ErrorMessage.INVALID_DAY_FUTURE;
 import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
@@ -7,7 +7,6 @@ import attendance.domain.attendance.AttendanceResult;
 import attendance.domain.attendance.AttendanceState;
 import attendance.exception.CustomIllegalArgumentException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,9 +69,5 @@ public class CrewLog {
                 .collect(Collectors.toMap(key -> key,
                         v -> AttendanceState.makeDefault(now, v),
                         (x, y) -> y, LinkedHashMap::new));
-    }
-
-    public Map<Integer, AttendanceState> getLog() {
-        return Collections.unmodifiableMap(log);
     }
 }
