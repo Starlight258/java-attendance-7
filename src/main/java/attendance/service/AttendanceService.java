@@ -2,8 +2,8 @@ package attendance.service;
 
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
-import attendance.domain.attendance.AttendanceType;
 import attendance.domain.crew.SubjectType;
+import attendance.domain.attendance.AttendanceResult;
 import attendance.domain.log.CrewLog;
 import attendance.domain.log.CrewLogs;
 import attendance.dto.CrewDto;
@@ -56,13 +56,13 @@ public class AttendanceService {
 
     public MonthTotalAttendanceDto checkCrewLog(final String nickname, final int day) {
         CrewLog crewLog = crewLogs.getCrewLog(nickname);
-        List<InformDto> dtos = crewLog.getLogs().entrySet().stream()
+        List<InformDto> dtos = crewLog.getLog().entrySet().stream()
                 .filter(entry -> entry.getKey() != day)
                 .map(Entry::getValue)
                 .map(value -> InformDto.of(value.attendanceTime(), value.attendanceType()))
                 .toList();
-        Map<AttendanceType, Integer> countMap = crewLog.getTotalCount(day);
-        return MonthTotalAttendanceDto.from(dtos, countMap);
+        AttendanceResult result = crewLog.makeResult(day);
+        return MonthTotalAttendanceDto.from(dtos, result);
     }
 
     public List<CrewDto> checkDangerCrew(final LocalDateTime now) {
@@ -101,7 +101,7 @@ public class AttendanceService {
     }
 
     private Optional<CrewDto> makeEachCrew(final Entry<String, CrewLog> entry, final int day) {
-        Map<AttendanceType, Integer> result = entry.getValue().getTotalCount(day);
+        AttendanceResult result = entry.getValue().makeResult(day);
         SubjectType subjectType = SubjectType.from(result);
         if (subjectType == SubjectType.NONE) {
             return Optional.empty();
