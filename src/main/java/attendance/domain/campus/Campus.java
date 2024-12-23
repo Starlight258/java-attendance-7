@@ -9,9 +9,6 @@ import java.time.LocalTime;
 
 public class Campus {
 
-    // 운영시간
-    // 매일 08:00~23:00
-    // 주말 및 공휴일에는 출석을 받지 않는다.
     private static final int START_HOUR = 8;
     private static final int END_HOUR = 23;
 

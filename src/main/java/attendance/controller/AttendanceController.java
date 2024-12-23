@@ -2,7 +2,7 @@ package attendance.controller;
 
 import attendance.domain.command.Command;
 import attendance.dto.CrewDto;
-import attendance.dto.InformDto;
+import attendance.dto.AttendanceDto;
 import attendance.dto.ModifyDto;
 import attendance.dto.MonthTotalAttendanceDto;
 import attendance.service.AttendanceService;
@@ -91,8 +91,8 @@ public class AttendanceController {
         outputView.showRequestCheckAttendanceTime();
         LocalTime attendanceTime = inputView.readTime();
         LocalDateTime todayTime = TimeUtils.makeTime(now, attendanceTime);
-        InformDto informDto = attendanceService.processAttendance(nickname, todayTime);
-        outputView.showInformCheck(informDto);
+        AttendanceDto attendanceDto = attendanceService.processAttendance(nickname, todayTime);
+        outputView.showInformCheck(attendanceDto);
     }
 
 }

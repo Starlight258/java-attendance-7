@@ -17,8 +17,8 @@ public enum SubjectType {
     }
 
     public static List<SubjectType> sort() {
-        return Arrays.stream(SubjectType.values()).
-                sorted((s1, s2) -> Integer.compare(s2.count, s1.count))
+        return Arrays.stream(SubjectType.values())
+                .sorted((s1, s2) -> Integer.compare(s2.count, s1.count))
                 .toList();
     }
 
