@@ -1,7 +1,6 @@
-package attendance.domain.crew;
+package attendance.domain.attendance;
 
 import attendance.domain.campus.CampusEducationTime;
-import attendance.domain.campus.CampusOperationTime;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -13,7 +12,6 @@ public enum AttendanceType {
     private static final int LATE_THRESHOLD = 5;
 
     public static AttendanceType getAttendanceType(final LocalDateTime attendanceTime) {
-        CampusOperationTime.checkOperationTime(attendanceTime.toLocalTime());
         return calculateType(attendanceTime);
     }
 

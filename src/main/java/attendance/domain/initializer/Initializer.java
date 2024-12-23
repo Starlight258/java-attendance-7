@@ -1,5 +1,6 @@
 package attendance.domain.initializer;
 
+import attendance.domain.campus.Campus;
 import attendance.domain.log.CrewLogs;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
@@ -18,7 +19,7 @@ public class Initializer {
     private static final int TOKEN_SIZE = 2;
 
     public CrewLogs makeCrewLogs() {
-        CrewLogs crewLogs = new CrewLogs(new HashMap<>());
+        CrewLogs crewLogs = new CrewLogs(new HashMap<>(), new Campus());
         List<String> attendances = readAttendances();
         LocalDateTime now = DateTimes.now();
         for (String attendance : attendances) {

@@ -1,5 +1,6 @@
 package attendance.domain.crew;
 
+import attendance.domain.attendance.AttendanceType;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import java.util.Arrays;

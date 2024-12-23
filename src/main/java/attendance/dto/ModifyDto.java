@@ -1,6 +1,6 @@
 package attendance.dto;
 
-import attendance.domain.crew.AttendanceType;
+import attendance.domain.attendance.AttendanceType;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
 

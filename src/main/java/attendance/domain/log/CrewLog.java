@@ -3,10 +3,9 @@ package attendance.domain.log;
 import static attendance.exception.ErrorMessage.INVALID_DAY_FUTURE;
 import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
 
-import attendance.domain.campus.CampusOperationTime;
-import attendance.domain.crew.AttendanceType;
+import attendance.domain.attendance.AttendanceState;
+import attendance.domain.attendance.AttendanceType;
 import attendance.exception.CustomIllegalArgumentException;
-import attendance.util.TimeUtils;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -14,16 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class CrewLog {
 
-    private static final int FIRST_DAY = 1;
-
     private final Map<Integer, AttendanceState> logs;
 
-    public CrewLog(final LocalDateTime now) {
-        this.logs = initialize(now, getWeekday(now));
+    public CrewLog(final LocalDateTime now, final List<Integer> weekday) {
+        this.logs = initialize(now, weekday);
     }
 
     public void add(final LocalDateTime input) {
@@ -54,10 +50,6 @@ public class CrewLog {
                         Collectors.toMap(AttendanceState::getAttendanceType, v -> 1, Integer::sum, LinkedHashMap::new));
     }
 
-    public Map<Integer, AttendanceState> getLogs() {
-        return Collections.unmodifiableMap(logs);
-    }
-
     private boolean isNotNone(final LocalDateTime input) {
         int day = input.getDayOfMonth();
         return logs.containsKey(day) && !logs.get(day).isNone();
@@ -75,10 +67,7 @@ public class CrewLog {
                         (x, y) -> y, LinkedHashMap::new));
     }
 
-    private List<Integer> getWeekday(LocalDateTime now) {
-        return IntStream.range(FIRST_DAY, now.getDayOfMonth())
-                .filter(day -> !CampusOperationTime.isNotOperationDay(TimeUtils.makeDay(now, day)))
-                .boxed()
-                .toList();
+    public Map<Integer, AttendanceState> getLogs() {
+        return Collections.unmodifiableMap(logs);
     }
 }
