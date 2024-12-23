@@ -12,13 +12,7 @@ public enum AttendanceType {
     private static final int LATE_THRESHOLD = 5;
 
     public static AttendanceType getAttendanceType(final LocalDateTime attendanceTime) {
-        return calculateType(attendanceTime);
-    }
-
-    private static AttendanceType calculateType(final LocalDateTime attendanceTime) {
-        CampusEducationTime campusEducationTime = CampusEducationTime.of(attendanceTime);
-        LocalTime startTime = campusEducationTime.getStartTime();
-        long minute = ChronoUnit.MINUTES.between(startTime, attendanceTime.toLocalTime());
+        long minute = calculateDifference(attendanceTime);
         if (minute > ABSENT_THRESHOLD) {
             return AttendanceType.결석;
         }
@@ -26,6 +20,12 @@ public enum AttendanceType {
             return AttendanceType.지각;
         }
         return AttendanceType.출석;
+    }
+
+    private static long calculateDifference(final LocalDateTime attendanceTime) {
+        int startHour = CampusEducationTime.getStartHour(attendanceTime);
+        LocalTime startTime = LocalTime.of(startHour, 0);
+        return ChronoUnit.MINUTES.between(startTime, attendanceTime.toLocalTime());
     }
 
     public boolean isAbsent() {
