@@ -3,6 +3,7 @@ package attendance.domain.date;
 import java.util.Arrays;
 
 public enum Holiday {
+    
     CHRISTMAS(25);
 
     private final int day;

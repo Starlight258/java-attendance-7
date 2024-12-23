@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 public enum AttendanceType {
+
     출석, 지각, 결석, NONE;
 
     private static final int ABSENT_THRESHOLD = 30;

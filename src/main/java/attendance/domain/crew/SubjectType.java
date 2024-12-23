@@ -1,14 +1,13 @@
 package attendance.domain.crew;
 
-import attendance.domain.attendance.AttendanceType;
+import attendance.domain.attendance.AttendanceResult;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public enum SubjectType {
+
     NONE(0), 경고(2), 면담(3), 제적(6);
 
     private final int count;
@@ -30,16 +29,9 @@ public enum SubjectType {
                 .orElseThrow(() -> new CustomIllegalArgumentException(ErrorMessage.INVALID_STATE));
     }
 
-    public static SubjectType from(final Map<AttendanceType, Integer> result) {
-        Integer lateCount = result.getOrDefault(AttendanceType.지각, 0);
-        Integer absentCount = calculateAbsentCount(result);
+    public static SubjectType from(final AttendanceResult result) {
+        int lateCount = result.getLateCount();
+        int absentCount = result.getAbsentCount();
         return SubjectType.from(lateCount, absentCount);
-    }
-
-    private static int calculateAbsentCount(final Map<AttendanceType, Integer> result) {
-        return result.entrySet().stream()
-                .filter(entry -> entry.getKey().isAbsent())
-                .mapToInt(Entry::getValue)
-                .sum();
     }
 }
