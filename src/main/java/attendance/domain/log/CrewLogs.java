@@ -3,6 +3,7 @@ package attendance.domain.log;
 import static attendance.exception.ErrorMessage.INVALID_ATTENDANCE_DAY;
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
+import attendance.domain.attendance.AttendanceResult;
 import attendance.domain.campus.Campus;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.util.TimeFormatter;
@@ -10,8 +11,11 @@ import attendance.util.TimeUtils;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CrewLogs {
@@ -63,6 +67,36 @@ public class CrewLogs {
             throw new CustomIllegalArgumentException(
                     INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(date)));
         }
+    }
+
+    public Map<String, AttendanceResult> makeSortedResults(int today) {
+        Map<String, AttendanceResult> results = logs.entrySet().stream()
+                .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().makeResult(today)));
+        return sort(results);
+    }
+
+    private Map<String, AttendanceResult> sort(final Map<String, AttendanceResult> results) {
+        return results.entrySet().stream()
+                .sorted(this::compareResult)
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (oldVal, newVal) -> newVal,
+                        LinkedHashMap::new));
+    }
+
+    private int compareResult(final Entry<String, AttendanceResult> entry,
+                              final Entry<String, AttendanceResult> compared) {
+        AttendanceResult result = entry.getValue();
+        AttendanceResult comparedResult = compared.getValue();
+        int absentCount = result.calculateAbsentCountWithLate();
+        int lateCount = result.calculateLateCountWithoutAbsent();
+        int comparedAbsentCount = comparedResult.calculateAbsentCountWithLate();
+        int comparedLateCount = comparedResult.calculateLateCountWithoutAbsent();
+        if (absentCount == comparedAbsentCount) {
+            if (lateCount == comparedLateCount) {
+                return entry.getKey().compareTo(compared.getKey());
+            }
+            return Integer.compare(comparedLateCount, lateCount);
+        }
+        return Integer.compare(comparedAbsentCount, absentCount);
     }
 
     private void checkTime(final LocalDateTime time) {

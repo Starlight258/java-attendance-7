@@ -43,11 +43,16 @@ public class CrewLog {
     }
 
     public AttendanceResult makeResult(int today) {
-        return new AttendanceResult(log.entrySet().stream()
-                .filter(entry -> entry.getKey() != today)
-                .map(Entry::getValue)
+        return new AttendanceResult(getAttendanceStateUntilToday(today).stream()
                 .collect(Collectors.toMap(AttendanceState::attendanceType, v -> 1,
                         Integer::sum, LinkedHashMap::new)));
+    }
+
+    public List<AttendanceState> getAttendanceStateUntilToday(final int today) {
+        return log.entrySet().stream()
+                .filter(entry -> entry.getKey() != today)
+                .map(Entry::getValue)
+                .toList();
     }
 
     private boolean isNotNone(final LocalDateTime input) {
