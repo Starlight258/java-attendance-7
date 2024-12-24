@@ -55,44 +55,71 @@ public class AttendanceController {
         }
     }
 
-    private void checkDangerCrew(final LocalDateTime now) {
-        List<CrewDto> crewDtos = attendanceService.checkDangerCrew(now);
-        outputView.showTitleDangerSubject(crewDtos);
-    }
-
-    private void checkCrewLog(final LocalDateTime now) {
-        outputView.showRequestLogNickname();
-        String nickname = inputView.readNickname();
-        attendanceService.checkNickname(nickname);
-        TotalAttendanceDto totalAttendanceDto = attendanceService.checkCrewLog(nickname, now.getDayOfMonth());
-        outputView.showTotalLog(nickname, totalAttendanceDto);
-    }
-
-    private void modifyAttendance(final LocalDateTime now) {
-        outputView.showRequestModifyNickname();
-        String nickname = inputView.readNickname();
-        attendanceService.checkNickname(nickname);
-        outputView.showRequestModifyDay();
-        int day = inputView.readModifyDay();
-        LocalDateTime today = TimeUtils.makeDay(now, day);
-        attendanceService.checkModifyDate(now, today);
-        outputView.showRequestModifyTime();
-        LocalTime time = inputView.readTime();
-        LocalDateTime todayTime = TimeUtils.makeTime(today, time);
-        ModifyDto modifyDto = attendanceService.modifyTime(nickname, todayTime);
-        outputView.showInformModify(modifyDto);
-    }
-
     private void checkAttendance(final LocalDateTime now) {
         attendanceService.checkAttendanceDate(now);
-        outputView.showRequestCheckNickname();
-        String nickname = inputView.readNickname();
-        attendanceService.checkNickname(nickname);
-        outputView.showRequestCheckAttendanceTime();
-        LocalTime attendanceTime = inputView.readTime();
-        LocalDateTime todayTime = TimeUtils.makeTime(now, attendanceTime);
+        String nickname = readNickname();
+        LocalDateTime todayTime = readTime(now);
         AttendanceDto attendanceDto = attendanceService.processAttendance(nickname, todayTime);
         outputView.showInformCheck(attendanceDto);
     }
 
+    private String readNickname() {
+        outputView.showRequestCheckNickname();
+        String nickname = inputView.readNickname();
+        attendanceService.checkNickname(nickname);
+        return nickname;
+    }
+
+    private LocalDateTime readTime(final LocalDateTime now) {
+        outputView.showRequestCheckAttendanceTime();
+        LocalTime attendanceTime = inputView.readTime();
+        return TimeUtils.makeTime(now, attendanceTime);
+    }
+
+    private void modifyAttendance(final LocalDateTime now) {
+        String nickname = readModifyNickname();
+        LocalDateTime today = readModifyDay(now);
+        LocalDateTime todayTime = readModifyTime(today);
+        ModifyDto modifyDto = attendanceService.modifyTime(nickname, todayTime);
+        outputView.showInformModify(modifyDto);
+    }
+
+    private String readModifyNickname() {
+        outputView.showRequestModifyNickname();
+        String nickname = inputView.readNickname();
+        attendanceService.checkNickname(nickname);
+        return nickname;
+    }
+
+    private LocalDateTime readModifyDay(final LocalDateTime now) {
+        outputView.showRequestModifyDay();
+        int day = inputView.readModifyDay();
+        LocalDateTime today = TimeUtils.makeDay(now, day);
+        attendanceService.checkModifyDate(now, today);
+        return today;
+    }
+
+    private LocalDateTime readModifyTime(final LocalDateTime today) {
+        outputView.showRequestModifyTime();
+        LocalTime time = inputView.readTime();
+        return TimeUtils.makeTime(today, time);
+    }
+
+    private void checkCrewLog(final LocalDateTime now) {
+        String nickname = readHistoryNickname();
+        TotalAttendanceDto totalAttendanceDto = attendanceService.checkCrewLog(nickname, now.getDayOfMonth());
+        outputView.showTotalLog(nickname, totalAttendanceDto);
+    }
+
+    private String readHistoryNickname() {
+        outputView.showRequestLogNickname();
+        String nickname = inputView.readNickname();
+        attendanceService.checkNickname(nickname);
+        return nickname;
+    }
+
+    private void checkDangerCrew(final LocalDateTime now) {
+        List<CrewDto> crewDtos = attendanceService.checkDangerCrew(now);
+        outputView.showTitleDangerSubject(crewDtos);
+    }
 }
