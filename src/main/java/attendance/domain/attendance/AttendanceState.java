@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public record AttendanceState(LocalDateTime attendanceTime, AttendanceType attendanceType) {
 
     public static AttendanceState makeDefault(final LocalDate now, final int day) {
-        return new AttendanceState(TimeUtils.makeDay(now, day), AttendanceType.NONE);
+        return new AttendanceState(TimeUtils.alterDay(now, day), AttendanceType.NONE);
     }
 
     public static AttendanceState makeAttendance(final LocalDateTime time) {

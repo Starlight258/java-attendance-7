@@ -73,7 +73,7 @@ public class AttendanceController {
     private LocalDateTime readTime(final LocalDateTime now) {
         outputView.showRequestCheckAttendanceTime();
         LocalTime attendanceTime = inputView.readTime();
-        return TimeUtils.makeTime(now.toLocalDate(), attendanceTime);
+        return TimeUtils.alterTime(now.toLocalDate(), attendanceTime);
     }
 
     private void modifyAttendance(final LocalDateTime now) {
@@ -94,7 +94,7 @@ public class AttendanceController {
     private LocalDateTime readModifyDay(final LocalDateTime now) {
         outputView.showRequestModifyDay();
         int day = inputView.readModifyDay();
-        LocalDateTime today = TimeUtils.makeDay(now.toLocalDate(), day);
+        LocalDateTime today = TimeUtils.alterDay(now.toLocalDate(), day);
         attendanceService.checkModifyDate(now, today);
         return today;
     }
@@ -102,7 +102,7 @@ public class AttendanceController {
     private LocalDateTime readModifyTime(final LocalDateTime today) {
         outputView.showRequestModifyTime();
         LocalTime time = inputView.readTime();
-        return TimeUtils.makeTime(today.toLocalDate(), time);
+        return TimeUtils.alterTime(today.toLocalDate(), time);
     }
 
     private void checkCrewHistory(final LocalDateTime now) {

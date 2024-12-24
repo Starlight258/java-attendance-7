@@ -105,7 +105,7 @@ public class CrewHistories {
 
     private List<Integer> getWeekday(LocalDate now) {
         return IntStream.range(FIRST_DAY, now.getDayOfMonth())
-                .filter(day -> !campus.isNotOperationDay(TimeUtils.makeDay(now, day)))
+                .filter(day -> !campus.isNotOperationDay(TimeUtils.alterDay(now, day)))
                 .boxed()
                 .toList();
     }
