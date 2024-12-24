@@ -3,11 +3,11 @@ package attendance.service;
 import static attendance.exception.ErrorMessage.INVALID_NICKNAME;
 
 import attendance.domain.attendance.AttendanceResult;
-import attendance.domain.crew.CrewType;
-import attendance.domain.crew.CrewHistory;
 import attendance.domain.crew.CrewHistories;
-import attendance.dto.CrewResponse;
+import attendance.domain.crew.CrewHistory;
+import attendance.domain.crew.CrewType;
 import attendance.dto.AttendanceResponse;
+import attendance.dto.CrewResponse;
 import attendance.dto.ModifyResponse;
 import attendance.dto.TotalAttendanceResponse;
 import attendance.exception.CustomIllegalArgumentException;
@@ -69,7 +69,7 @@ public class AttendanceService {
 
     private List<AttendanceResponse> convertToInformResponses(final int day, final CrewHistory crewHistory) {
         return crewHistory.getAttendanceStateUntilYesterday(day).stream()
-                .map(value -> AttendanceResponse.of(value.attendanceTime(), value.attendanceType()))
+                .map(value -> AttendanceResponse.of(value.attendanceTime()))
                 .toList();
     }
 }

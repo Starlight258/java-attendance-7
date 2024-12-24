@@ -13,6 +13,17 @@ public enum AttendanceType {
     private static final int ABSENT_THRESHOLD = 30;
 
     public static AttendanceType getAttendanceType(final LocalDateTime attendanceTime) {
+        if (isDefaultValue(attendanceTime)) {
+            return AttendanceType.결석;
+        }
+        return checkDifference(attendanceTime);
+    }
+
+    private static boolean isDefaultValue(final LocalDateTime attendanceTime) {
+        return LocalTime.MIN.equals(attendanceTime.toLocalTime());
+    }
+
+    private static AttendanceType checkDifference(final LocalDateTime attendanceTime) {
         long minute = calculateDifference(attendanceTime);
         if (minute > ABSENT_THRESHOLD) {
             return AttendanceType.결석;

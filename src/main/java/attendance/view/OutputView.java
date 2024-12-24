@@ -1,5 +1,6 @@
 package attendance.view;
 
+import attendance.domain.attendance.AttendanceType;
 import attendance.domain.crew.CrewType;
 import attendance.dto.AttendanceResponse;
 import attendance.dto.CrewResponse;
@@ -7,6 +8,7 @@ import attendance.dto.ModifyResponse;
 import attendance.dto.TotalAttendanceResponse;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class OutputView {
@@ -34,6 +36,7 @@ public class OutputView {
             이번 달 %s의 출석 기록입니다.
             """;
     private static final String INFORM_DAILY_HISTORY = "%s (%s)";
+    private static final String EMPTY_HISTORY = " --:--";
     private static final String INFORM_TOTAL_HISTORY = """
             
             출석: %d회
@@ -58,7 +61,8 @@ public class OutputView {
     }
 
     public void showInformAttend(final AttendanceResponse response) {
-        showln(LINE + format(INFORM_CHECK, response.time(), response.attendanceType()));
+        showln(LINE + format(INFORM_CHECK, TimeFormatter.makeDateTimeMessage(response.time()),
+                response.attendanceType().name()));
     }
 
     public void showRequestModifyNickname() {
@@ -85,7 +89,7 @@ public class OutputView {
     public void showTotalHistories(final String name, final TotalAttendanceResponse responses) {
         showln(format(TITLE_HISTORY, name));
         responses.responses().stream()
-                .map(response -> format(INFORM_DAILY_HISTORY, response.time(), response.attendanceType()))
+                .map(this::makeHistoryMessage)
                 .forEach(this::showln);
         showln(format(INFORM_TOTAL_HISTORY, responses.attendanceCount(), responses.lateCount(),
                 responses.absentCount()));
@@ -93,6 +97,14 @@ public class OutputView {
             return;
         }
         showln(format(INFORM_SUBJECT, responses.subject()));
+    }
+
+    private String makeHistoryMessage(final AttendanceResponse response) {
+        if (LocalTime.MIN.equals(response.time().toLocalTime())) {
+            return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateMessage(response.time()) + EMPTY_HISTORY,
+                    AttendanceType.결석.name());
+        }
+        return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateTimeMessage(response.time()), response.attendanceType());
     }
 
     public void showTitleDangerSubject(final List<CrewResponse> responses) {
