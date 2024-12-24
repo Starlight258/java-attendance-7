@@ -8,6 +8,7 @@ import attendance.domain.campus.Campus;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.util.TimeFormatter;
 import attendance.util.TimeUtils;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,7 +33,7 @@ public class CrewHistories {
     public void initialize(final LocalDateTime now, final String name, final LocalDateTime time) {
         checkTime(time);
         if (notContains(name)) {
-            histories.put(name, new CrewHistory(now, getWeekday(now)));
+            histories.put(name, new CrewHistory(now, getWeekday(now.toLocalDate())));
         }
         CrewHistory crewHistory = histories.get(name);
         crewHistory.add(time);
@@ -102,7 +103,7 @@ public class CrewHistories {
         campus.checkOperationTime(time.toLocalTime());
     }
 
-    private List<Integer> getWeekday(LocalDateTime now) {
+    private List<Integer> getWeekday(LocalDate now) {
         return IntStream.range(FIRST_DAY, now.getDayOfMonth())
                 .filter(day -> !campus.isNotOperationDay(TimeUtils.makeDay(now, day)))
                 .boxed()

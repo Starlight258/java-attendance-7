@@ -68,7 +68,7 @@ public class CrewHistory {
     private Map<Integer, AttendanceState> initialize(final LocalDateTime now, final List<Integer> weekdays) {
         return weekdays.stream()
                 .collect(Collectors.toMap(key -> key,
-                        v -> AttendanceState.makeDefault(now, v),
+                        v -> AttendanceState.makeDefault(now.toLocalDate(), v),
                         (x, y) -> y, LinkedHashMap::new));
     }
 }

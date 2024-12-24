@@ -1,11 +1,12 @@
 package attendance.domain.attendance;
 
 import attendance.util.TimeUtils;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record AttendanceState(LocalDateTime attendanceTime, AttendanceType attendanceType) {
 
-    public static AttendanceState makeDefault(final LocalDateTime now, final int day) {
+    public static AttendanceState makeDefault(final LocalDate now, final int day) {
         return new AttendanceState(TimeUtils.makeDay(now, day), AttendanceType.NONE);
     }
 

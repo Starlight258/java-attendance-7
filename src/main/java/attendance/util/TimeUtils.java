@@ -31,12 +31,11 @@ public class TimeUtils {
         }
     }
 
-    public static LocalDateTime makeTime(final LocalDateTime today, final LocalTime time) {
-        return LocalDateTime.of(today.getYear(), today.getMonthValue(), today.getDayOfMonth(),
-                time.getHour(), time.getMinute());
+    public static LocalDateTime makeTime(final LocalDate today, final LocalTime time) {
+        return LocalDateTime.of(today, time);
     }
 
-    public static LocalDateTime makeDay(final LocalDateTime today, final int day) {
-        return LocalDate.of(today.getYear(), today.getMonthValue(), day).atStartOfDay();
+    public static LocalDateTime makeDay(final LocalDate today, final int day) {
+        return today.withDayOfMonth(day).atStartOfDay();
     }
 }
