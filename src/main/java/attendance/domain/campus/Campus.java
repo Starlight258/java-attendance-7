@@ -1,6 +1,5 @@
 package attendance.domain.campus;
 
-import attendance.domain.date.Holiday;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import java.time.DayOfWeek;
