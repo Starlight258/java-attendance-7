@@ -87,10 +87,18 @@ public class OutputView {
     }
 
     public void showTotalHistories(final String name, final TotalAttendanceResponse responses) {
+        showHistory(name, responses);
+        showHistoryResult(responses);
+    }
+
+    private void showHistory(final String name, final TotalAttendanceResponse responses) {
         showln(format(TITLE_HISTORY, name));
         responses.responses().stream()
                 .map(this::makeHistoryMessage)
                 .forEach(this::showln);
+    }
+
+    private void showHistoryResult(final TotalAttendanceResponse responses) {
         showln(format(INFORM_TOTAL_HISTORY, responses.attendanceCount(), responses.lateCount(),
                 responses.absentCount()));
         if (responses.subject().equals(CrewType.성실.name())) {
