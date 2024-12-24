@@ -28,12 +28,12 @@ public class OutputView {
     private static final String REQUEST_MODIFY_TIME = "언제로 변경하겠습니까?";
     private static final String INFORM_MODIFY = "%s (%s) -> %s (%s) 수정 완료!";
 
-    private static final String REQUEST_LOG_NICKNAME = "닉네임을 입력해 주세요.";
-    private static final String TITLE_LOG = """
+    private static final String REQUEST_HISTORY_NICKNAME = "닉네임을 입력해 주세요.";
+    private static final String TITLE_HISTORY = """
             이번 달 %s의 출석 기록입니다.
             """;
-    private static final String INFORM_DAILY_LOG = "%s (%s)";
-    private static final String INFORM_TOTAL_LOG = """
+    private static final String INFORM_DAILY_HISTORY = "%s (%s)";
+    private static final String INFORM_TOTAL_HISTORY = """
             
             출석: %d회
             지각: %d회
@@ -78,16 +78,16 @@ public class OutputView {
                 dto.currentTime(), dto.currentType()));
     }
 
-    public void showRequestLogNickname() {
-        showln(LINE + REQUEST_LOG_NICKNAME);
+    public void showRequestHistoryNickname() {
+        showln(LINE + REQUEST_HISTORY_NICKNAME);
     }
 
-    public void showTotalLog(final String name, final TotalAttendanceDto dtos) {
-        showln(format(TITLE_LOG, name));
+    public void showTotalHistories(final String name, final TotalAttendanceDto dtos) {
+        showln(format(TITLE_HISTORY, name));
         dtos.dtos().stream()
-                .map(dto -> format(INFORM_DAILY_LOG, dto.time(), dto.attendanceType()))
+                .map(dto -> format(INFORM_DAILY_HISTORY, dto.time(), dto.attendanceType()))
                 .forEach(this::showln);
-        showln(format(INFORM_TOTAL_LOG, dtos.attendanceCount(), dtos.lateCount(),
+        showln(format(INFORM_TOTAL_HISTORY, dtos.attendanceCount(), dtos.lateCount(),
                 dtos.absentCount()));
         if (dtos.subject().equals(NONE)) {
             return;
