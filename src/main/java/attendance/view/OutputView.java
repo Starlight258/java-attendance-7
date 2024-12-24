@@ -1,9 +1,9 @@
 package attendance.view;
 
-import attendance.dto.CrewDto;
-import attendance.dto.AttendanceDto;
-import attendance.dto.ModifyDto;
-import attendance.dto.TotalAttendanceDto;
+import attendance.dto.CrewResponse;
+import attendance.dto.AttendanceResponse;
+import attendance.dto.ModifyResponse;
+import attendance.dto.TotalAttendanceResponse;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,8 +57,8 @@ public class OutputView {
         showln(REQUEST_CHECK_ATTENDANCE_TIME);
     }
 
-    public void showInformCheck(final AttendanceDto dto) {
-        showln(LINE + format(INFORM_CHECK, dto.time(), dto.attendanceType()));
+    public void showInformCheck(final AttendanceResponse response) {
+        showln(LINE + format(INFORM_CHECK, response.time(), response.attendanceType()));
     }
 
     public void showRequestModifyNickname() {
@@ -73,33 +73,33 @@ public class OutputView {
         showln(REQUEST_MODIFY_TIME);
     }
 
-    public void showInformModify(final ModifyDto dto) {
-        showln(format(INFORM_MODIFY, dto.previousTime(), dto.previousType(),
-                dto.currentTime(), dto.currentType()));
+    public void showInformModify(final ModifyResponse response) {
+        showln(format(INFORM_MODIFY, response.previousTime(), response.previousType(),
+                response.currentTime(), response.currentType()));
     }
 
     public void showRequestHistoryNickname() {
         showln(LINE + REQUEST_HISTORY_NICKNAME);
     }
 
-    public void showTotalHistories(final String name, final TotalAttendanceDto dtos) {
+    public void showTotalHistories(final String name, final TotalAttendanceResponse responses) {
         showln(format(TITLE_HISTORY, name));
-        dtos.dtos().stream()
-                .map(dto -> format(INFORM_DAILY_HISTORY, dto.time(), dto.attendanceType()))
+        responses.responses().stream()
+                .map(response -> format(INFORM_DAILY_HISTORY, response.time(), response.attendanceType()))
                 .forEach(this::showln);
-        showln(format(INFORM_TOTAL_HISTORY, dtos.attendanceCount(), dtos.lateCount(),
-                dtos.absentCount()));
-        if (dtos.subject().equals(NONE)) {
+        showln(format(INFORM_TOTAL_HISTORY, responses.attendanceCount(), responses.lateCount(),
+                responses.absentCount()));
+        if (responses.subject().equals(NONE)) {
             return;
         }
-        showln(format(INFORM_SUBJECT, dtos.subject()));
+        showln(format(INFORM_SUBJECT, responses.subject()));
     }
 
-    public void showTitleDangerSubject(final List<CrewDto> dtos) {
+    public void showTitleDangerSubject(final List<CrewResponse> responses) {
         showln(LINE + TITLE_DANGER_SUBJECT);
-        dtos.stream()
-                .map(dto -> format(INFORM_DANGER_SUBJECT, dto.name(), dto.absentCount(), dto.lateCount(),
-                        dto.subjectType()))
+        responses.stream()
+                .map(response -> format(INFORM_DANGER_SUBJECT, response.name(), response.absentCount(), response.lateCount(),
+                        response.subjectType()))
                 .forEach(this::showln);
     }
 

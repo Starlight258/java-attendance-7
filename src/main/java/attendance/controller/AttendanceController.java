@@ -1,10 +1,10 @@
 package attendance.controller;
 
 import attendance.domain.command.Command;
-import attendance.dto.CrewDto;
-import attendance.dto.AttendanceDto;
-import attendance.dto.ModifyDto;
-import attendance.dto.TotalAttendanceDto;
+import attendance.dto.CrewResponse;
+import attendance.dto.AttendanceResponse;
+import attendance.dto.ModifyResponse;
+import attendance.dto.TotalAttendanceResponse;
 import attendance.service.AttendanceService;
 import attendance.util.TimeUtils;
 import attendance.view.InputView;
@@ -59,8 +59,8 @@ public class AttendanceController {
         attendanceService.checkAttendanceDate(now);
         String nickname = readNickname();
         LocalDateTime todayTime = readTime(now);
-        AttendanceDto attendanceDto = attendanceService.processAttendance(nickname, todayTime);
-        outputView.showInformCheck(attendanceDto);
+        AttendanceResponse attendanceResponse = attendanceService.processAttendance(nickname, todayTime);
+        outputView.showInformCheck(attendanceResponse);
     }
 
     private String readNickname() {
@@ -80,8 +80,8 @@ public class AttendanceController {
         String nickname = readModifyNickname();
         LocalDateTime today = readModifyDay(now);
         LocalDateTime todayTime = readModifyTime(today);
-        ModifyDto modifyDto = attendanceService.modifyTime(nickname, todayTime);
-        outputView.showInformModify(modifyDto);
+        ModifyResponse modifyResponse = attendanceService.modifyTime(nickname, todayTime);
+        outputView.showInformModify(modifyResponse);
     }
 
     private String readModifyNickname() {
@@ -107,8 +107,8 @@ public class AttendanceController {
 
     private void checkCrewHistory(final LocalDateTime now) {
         String nickname = readHistoryNickname();
-        TotalAttendanceDto totalAttendanceDto = attendanceService.checkCrewHistory(nickname, now.getDayOfMonth());
-        outputView.showTotalHistories(nickname, totalAttendanceDto);
+        TotalAttendanceResponse totalAttendanceResponse = attendanceService.checkCrewHistory(nickname, now.getDayOfMonth());
+        outputView.showTotalHistories(nickname, totalAttendanceResponse);
     }
 
     private String readHistoryNickname() {
@@ -119,7 +119,7 @@ public class AttendanceController {
     }
 
     private void checkDangerCrew(final LocalDateTime now) {
-        List<CrewDto> crewDtos = attendanceService.checkDangerCrew(now);
-        outputView.showTitleDangerSubject(crewDtos);
+        List<CrewResponse> crewResponses = attendanceService.checkDangerCrew(now);
+        outputView.showTitleDangerSubject(crewResponses);
     }
 }

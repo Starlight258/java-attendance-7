@@ -6,10 +6,10 @@ import attendance.domain.attendance.AttendanceResult;
 import attendance.domain.crew.CrewType;
 import attendance.domain.crew.CrewHistory;
 import attendance.domain.crew.CrewHistories;
-import attendance.dto.CrewDto;
-import attendance.dto.AttendanceDto;
-import attendance.dto.ModifyDto;
-import attendance.dto.TotalAttendanceDto;
+import attendance.dto.CrewResponse;
+import attendance.dto.AttendanceResponse;
+import attendance.dto.ModifyResponse;
+import attendance.dto.TotalAttendanceResponse;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import java.time.LocalDateTime;
@@ -42,34 +42,34 @@ public class AttendanceService {
         }
     }
 
-    public AttendanceDto processAttendance(final String nickname, final LocalDateTime time) {
+    public AttendanceResponse processAttendance(final String nickname, final LocalDateTime time) {
         crewHistories.addHistory(nickname, time);
-        return AttendanceDto.of(time);
+        return AttendanceResponse.of(time);
     }
 
-    public ModifyDto modifyTime(final String nickname, final LocalDateTime todayTime) {
+    public ModifyResponse modifyTime(final String nickname, final LocalDateTime todayTime) {
         LocalDateTime previousTime = crewHistories.modifyTime(nickname, todayTime);
-        return ModifyDto.of(previousTime, todayTime);
+        return ModifyResponse.of(previousTime, todayTime);
     }
 
-    public TotalAttendanceDto checkCrewHistory(final String nickname, final int day) {
+    public TotalAttendanceResponse checkCrewHistory(final String nickname, final int day) {
         CrewHistory crewHistory = crewHistories.getCrewHistory(nickname);
-        List<AttendanceDto> dtos = convertToInformDtos(day, crewHistory);
+        List<AttendanceResponse> responses = convertToInformResponses(day, crewHistory);
         AttendanceResult result = crewHistory.makeResult(day);
-        return TotalAttendanceDto.from(dtos, result);
+        return TotalAttendanceResponse.from(responses, result);
     }
 
-    public List<CrewDto> checkDangerCrew(final LocalDateTime now) {
+    public List<CrewResponse> checkDangerCrew(final LocalDateTime now) {
         Map<String, AttendanceResult> results = crewHistories.makeSortedResults(now.getDayOfMonth());
         return results.entrySet().stream()
-                .map(entry -> CrewDto.of(entry.getKey(), entry.getValue()))
-                .filter(dto -> !Objects.equals(dto.subjectType(), CrewType.NONE.name()))
+                .map(entry -> CrewResponse.of(entry.getKey(), entry.getValue()))
+                .filter(response -> !Objects.equals(response.subjectType(), CrewType.NONE.name()))
                 .toList();
     }
 
-    private List<AttendanceDto> convertToInformDtos(final int day, final CrewHistory crewHistory) {
+    private List<AttendanceResponse> convertToInformResponses(final int day, final CrewHistory crewHistory) {
         return crewHistory.getAttendanceStateUntilYesterday(day).stream()
-                .map(value -> AttendanceDto.of(value.attendanceTime(), value.attendanceType()))
+                .map(value -> AttendanceResponse.of(value.attendanceTime(), value.attendanceType()))
                 .toList();
     }
 }

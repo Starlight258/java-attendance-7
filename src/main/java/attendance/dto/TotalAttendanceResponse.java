@@ -4,14 +4,14 @@ import attendance.domain.crew.CrewType;
 import attendance.domain.attendance.AttendanceResult;
 import java.util.List;
 
-public record TotalAttendanceDto(List<AttendanceDto> dtos, int attendanceCount, int lateCount,
-                                 int absentCount, String subject) {
-    public static TotalAttendanceDto from(final List<AttendanceDto> dtos, AttendanceResult result) {
+public record TotalAttendanceResponse(List<AttendanceResponse> responses, int attendanceCount, int lateCount,
+                                      int absentCount, String subject) {
+    public static TotalAttendanceResponse from(final List<AttendanceResponse> responses, AttendanceResult result) {
         int attendanceCount = result.getAttendanceCount();
         int lateCount = result.getLateCount();
         int absentCount = result.getAbsentCount();
         CrewType crewType = CrewType.from(lateCount, absentCount);
-        return new TotalAttendanceDto(dtos, attendanceCount,
+        return new TotalAttendanceResponse(responses, attendanceCount,
                 lateCount, absentCount, crewType.name());
     }
 }

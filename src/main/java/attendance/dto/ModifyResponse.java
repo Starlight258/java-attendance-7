@@ -4,10 +4,10 @@ import attendance.domain.attendance.AttendanceType;
 import attendance.util.TimeFormatter;
 import java.time.LocalDateTime;
 
-public record ModifyDto(String previousTime, String previousType, String currentTime, String currentType) {
+public record ModifyResponse(String previousTime, String previousType, String currentTime, String currentType) {
 
-    public static ModifyDto of(LocalDateTime previousTime, LocalDateTime currentTime) {
-        return new ModifyDto(TimeFormatter.makeDateTimeMessage(previousTime),
+    public static ModifyResponse of(LocalDateTime previousTime, LocalDateTime currentTime) {
+        return new ModifyResponse(TimeFormatter.makeDateTimeMessage(previousTime),
                 AttendanceType.getAttendanceType(previousTime).name(),
                 TimeFormatter.makeTimeMessage(currentTime), AttendanceType.getAttendanceType(currentTime).name());
     }
