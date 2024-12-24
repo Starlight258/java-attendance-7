@@ -9,8 +9,8 @@ import java.time.LocalTime;
 
 public class Campus {
 
-    private static final int START_HOUR = 8;
-    private static final int END_HOUR = 23;
+    private static final LocalTime START_TIME = LocalTime.MIN.withHour(8);
+    private static final LocalTime END_TIME = LocalTime.MIN.withHour(23);
 
     public void checkOperationTime(final LocalTime time) {
         if (isNotOperationTime(time)) {
@@ -24,10 +24,8 @@ public class Campus {
     }
 
     private boolean isNotOperationTime(final LocalTime time) {
-        LocalTime startTime = LocalTime.MIN.withHour(START_HOUR);
-        LocalTime endTime = LocalTime.MIN.withHour(END_HOUR);
-        return time.equals(startTime) || time.equals(endTime)
-                || (time.isAfter(startTime) && time.isBefore(endTime));
+        return time.equals(START_TIME) || time.equals(END_TIME)
+                || (time.isAfter(START_TIME) && time.isBefore(END_TIME));
     }
 
     private boolean isWeekend(final LocalDateTime localDate) {
