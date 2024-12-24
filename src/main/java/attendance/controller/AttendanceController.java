@@ -41,8 +41,8 @@ public class AttendanceController {
     }
 
     private void processAttendance(final LocalDateTime now, final Command command) {
-        if (command == Command.ATTENDANCE_CHECK) {
-            checkAttendance(now);
+        if (command == Command.ATTENDANCE) {
+            attend(now);
         }
         if (command == Command.ATTENDANCE_MODIFY) {
             modifyAttendance(now);
@@ -55,12 +55,12 @@ public class AttendanceController {
         }
     }
 
-    private void checkAttendance(final LocalDateTime now) {
+    private void attend(final LocalDateTime now) {
         attendanceService.checkAttendanceDate(now);
         String nickname = readNickname();
         LocalDateTime todayTime = readTime(now);
-        AttendanceResponse attendanceResponse = attendanceService.processAttendance(nickname, todayTime);
-        outputView.showInformCheck(attendanceResponse);
+        AttendanceResponse attendanceResponse = attendanceService.attend(nickname, todayTime);
+        outputView.showInformAttend(attendanceResponse);
     }
 
     private String readNickname() {

@@ -57,7 +57,7 @@ public class OutputView {
         showln(REQUEST_CHECK_ATTENDANCE_TIME);
     }
 
-    public void showInformCheck(final AttendanceResponse response) {
+    public void showInformAttend(final AttendanceResponse response) {
         showln(LINE + format(INFORM_CHECK, response.time(), response.attendanceType()));
     }
 

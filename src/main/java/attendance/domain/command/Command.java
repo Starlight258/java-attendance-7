@@ -11,7 +11,7 @@ public enum Command {
     //3. 크루별 출석 기록 확인
     //4. 제적 위험자 확인
     //Q. 종료
-    ATTENDANCE_CHECK("1"), ATTENDANCE_MODIFY("2"), ATTENDANCE_CREW_HISTORY("3"),
+    ATTENDANCE("1"), ATTENDANCE_MODIFY("2"), ATTENDANCE_CREW_HISTORY("3"),
     ATTENDANCE_DANGER("4"), QUIT("Q");
 
     private final String value;

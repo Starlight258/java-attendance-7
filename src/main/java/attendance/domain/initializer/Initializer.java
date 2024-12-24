@@ -23,12 +23,21 @@ public class Initializer {
         List<String> attendances = readAttendances();
         LocalDateTime now = DateTimes.now();
         for (String attendance : attendances) {
-            List<String> tokens = parseByDelimiter(attendance);
-            String name = tokens.getFirst();
-            LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(tokens.getLast());
-            crewHistories.initialize(now, name, attendanceTime);
+            addAttendance(attendance, crewHistories, now);
         }
         return crewHistories;
+    }
+
+    private List<String> readAttendances() {
+        List<String> inputs = AttendanceFileReader.readAttendances();
+        return FileContentParser.removeHeaders(inputs);
+    }
+
+    private void addAttendance(final String attendance, final CrewHistories crewHistories, final LocalDateTime now) {
+        List<String> tokens = parseByDelimiter(attendance);
+        String name = tokens.getFirst();
+        LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(tokens.getLast());
+        crewHistories.initialize(now, name, attendanceTime);
     }
 
     private List<String> parseByDelimiter(final String token) {
@@ -37,10 +46,5 @@ public class Initializer {
             throw new CustomIllegalArgumentException(ErrorMessage.INVALID_FILE_FORMAT);
         }
         return values;
-    }
-
-    private List<String> readAttendances() {
-        List<String> inputs = AttendanceFileReader.readAttendances();
-        return FileContentParser.removeHeaders(inputs);
     }
 }

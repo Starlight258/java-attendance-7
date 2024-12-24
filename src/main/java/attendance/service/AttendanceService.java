@@ -42,7 +42,7 @@ public class AttendanceService {
         }
     }
 
-    public AttendanceResponse processAttendance(final String nickname, final LocalDateTime time) {
+    public AttendanceResponse attend(final String nickname, final LocalDateTime time) {
         crewHistories.addHistory(nickname, time);
         return AttendanceResponse.of(time);
     }
