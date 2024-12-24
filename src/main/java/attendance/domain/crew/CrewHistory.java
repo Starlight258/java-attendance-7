@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class CrewHistory {
 
     private static final int INCREASE_UNIT = 1;
+
     private final Map<Integer, AttendanceState> history;
 
     public CrewHistory(final LocalDateTime now, final List<Integer> weekday) {
@@ -23,7 +24,7 @@ public class CrewHistory {
     }
 
     public void add(final LocalDateTime input) {
-        if (isNotNone(input)) {
+        if (hasAttendance(input)) {
             throw new CustomIllegalArgumentException(INVALID_DUPLICATE_ATTENDANCE);
         }
         history.put(input.getDayOfMonth(), AttendanceState.makeAttendance(input));
@@ -55,20 +56,20 @@ public class CrewHistory {
                 .toList();
     }
 
-    private boolean isNotNone(final LocalDateTime input) {
-        int day = input.getDayOfMonth();
-        return history.containsKey(day) && !history.get(day).isNone();
-    }
-
-    private boolean isNotExist(final LocalDateTime input) {
-        int day = input.getDayOfMonth();
-        return !history.containsKey(day);
-    }
-
     private Map<Integer, AttendanceState> initialize(final LocalDateTime now, final List<Integer> weekdays) {
         return weekdays.stream()
                 .collect(Collectors.toMap(key -> key,
                         v -> AttendanceState.makeDefault(now.toLocalDate(), v),
                         (x, y) -> y, LinkedHashMap::new));
+    }
+
+    private boolean hasAttendance(final LocalDateTime input) {
+        int day = input.getDayOfMonth();
+        return history.containsKey(day) && !history.get(day).isDefaultValue();
+    }
+
+    private boolean isNotExist(final LocalDateTime input) {
+        int day = input.getDayOfMonth();
+        return !history.containsKey(day);
     }
 }

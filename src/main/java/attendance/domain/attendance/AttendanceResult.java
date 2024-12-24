@@ -25,7 +25,7 @@ public class AttendanceResult {
 
     public int getAbsentCount() {
         return result.entrySet().stream()
-                .filter(entry -> entry.getKey().isAbsent())
+                .filter(entry -> entry.getKey() == AttendanceType.결석)
                 .mapToInt(Entry::getValue)
                 .sum();
     }

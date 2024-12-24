@@ -63,7 +63,7 @@ public class AttendanceService {
         Map<String, AttendanceResult> results = crewHistories.makeSortedResults(now.getDayOfMonth());
         return results.entrySet().stream()
                 .map(entry -> CrewResponse.of(entry.getKey(), entry.getValue()))
-                .filter(response -> !Objects.equals(response.subjectType(), CrewType.NONE.name()))
+                .filter(response -> !Objects.equals(response.subjectType(), CrewType.성실.name()))
                 .toList();
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public enum CrewType {
 
-    NONE(0), 경고(2), 면담(3), 제적(6);
+    성실(0), 경고(2), 면담(3), 제적(6);
 
     private final int count;
 

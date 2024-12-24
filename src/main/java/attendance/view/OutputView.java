@@ -1,7 +1,8 @@
 package attendance.view;
 
-import attendance.dto.CrewResponse;
+import attendance.domain.crew.CrewType;
 import attendance.dto.AttendanceResponse;
+import attendance.dto.CrewResponse;
 import attendance.dto.ModifyResponse;
 import attendance.dto.TotalAttendanceResponse;
 import attendance.util.TimeFormatter;
@@ -43,7 +44,6 @@ public class OutputView {
 
     private static final String TITLE_DANGER_SUBJECT = "제적 위험자 조회 결과";
     private static final String INFORM_DANGER_SUBJECT = "- %s: 결석 %d회, 지각 %d회 (%s)";
-    private static final String NONE = "NONE";
 
     public void showTitleWelcome(final LocalDateTime today) {
         showln(format(TITLE_WELCOME, TimeFormatter.makeDateMessage(today)));
@@ -89,7 +89,7 @@ public class OutputView {
                 .forEach(this::showln);
         showln(format(INFORM_TOTAL_HISTORY, responses.attendanceCount(), responses.lateCount(),
                 responses.absentCount()));
-        if (responses.subject().equals(NONE)) {
+        if (responses.subject().equals(CrewType.성실.name())) {
             return;
         }
         showln(format(INFORM_SUBJECT, responses.subject()));
@@ -98,7 +98,8 @@ public class OutputView {
     public void showTitleDangerSubject(final List<CrewResponse> responses) {
         showln(LINE + TITLE_DANGER_SUBJECT);
         responses.stream()
-                .map(response -> format(INFORM_DANGER_SUBJECT, response.name(), response.absentCount(), response.lateCount(),
+                .map(response -> format(INFORM_DANGER_SUBJECT, response.name(), response.absentCount(),
+                        response.lateCount(),
                         response.subjectType()))
                 .forEach(this::showln);
     }
