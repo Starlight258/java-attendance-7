@@ -1,7 +1,7 @@
 package attendance.domain.initializer;
 
 import attendance.domain.campus.Campus;
-import attendance.domain.crew.CrewLogs;
+import attendance.domain.crew.CrewHistories;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
 import attendance.util.AttendanceFileReader;
@@ -18,17 +18,17 @@ public class Initializer {
     private static final String DELIMITER = ",";
     private static final int TOKEN_SIZE = 2;
 
-    public CrewLogs makeCrewLogs() {
-        CrewLogs crewLogs = new CrewLogs(new HashMap<>(), new Campus());
+    public CrewHistories makeCrewHistories() {
+        CrewHistories crewHistories = new CrewHistories(new HashMap<>(), new Campus());
         List<String> attendances = readAttendances();
         LocalDateTime now = DateTimes.now();
         for (String attendance : attendances) {
             List<String> tokens = parseByDelimiter(attendance);
             String name = tokens.getFirst();
             LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(tokens.getLast());
-            crewLogs.initialize(now, name, attendanceTime);
+            crewHistories.initialize(now, name, attendanceTime);
         }
-        return crewLogs;
+        return crewHistories;
     }
 
     private List<String> parseByDelimiter(final String token) {

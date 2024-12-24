@@ -47,8 +47,8 @@ public class AttendanceController {
         if (command == Command.ATTENDANCE_MODIFY) {
             modifyAttendance(now);
         }
-        if (command == Command.ATTENDANCE_CREW_LOG) {
-            checkCrewLog(now);
+        if (command == Command.ATTENDANCE_CREW_HISTORY) {
+            checkCrewHistory(now);
         }
         if (command == Command.ATTENDANCE_DANGER) {
             checkDangerCrew(now);
@@ -105,14 +105,14 @@ public class AttendanceController {
         return TimeUtils.makeTime(today, time);
     }
 
-    private void checkCrewLog(final LocalDateTime now) {
+    private void checkCrewHistory(final LocalDateTime now) {
         String nickname = readHistoryNickname();
-        TotalAttendanceDto totalAttendanceDto = attendanceService.checkCrewLog(nickname, now.getDayOfMonth());
-        outputView.showTotalLog(nickname, totalAttendanceDto);
+        TotalAttendanceDto totalAttendanceDto = attendanceService.checkCrewHistory(nickname, now.getDayOfMonth());
+        outputView.showTotalHistories(nickname, totalAttendanceDto);
     }
 
     private String readHistoryNickname() {
-        outputView.showRequestLogNickname();
+        outputView.showRequestHistoryNickname();
         String nickname = inputView.readNickname();
         attendanceService.checkNickname(nickname);
         return nickname;

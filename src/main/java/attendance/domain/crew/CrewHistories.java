@@ -17,48 +17,48 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class CrewLogs {
+public class CrewHistories {
 
     private static final int FIRST_DAY = 1;
 
-    private final Map<String, CrewLog> logs;
+    private final Map<String, CrewHistory> histories;
     private final Campus campus;
 
-    public CrewLogs(final Map<String, CrewLog> logs, final Campus campus) {
-        this.logs = new HashMap<>(logs);
+    public CrewHistories(final Map<String, CrewHistory> histories, final Campus campus) {
+        this.histories = new HashMap<>(histories);
         this.campus = campus;
     }
 
     public void initialize(final LocalDateTime now, final String name, final LocalDateTime time) {
         checkTime(time);
         if (notContains(name)) {
-            logs.put(name, new CrewLog(now, getWeekday(now)));
+            histories.put(name, new CrewHistory(now, getWeekday(now)));
         }
-        CrewLog crewLog = logs.get(name);
-        crewLog.add(time);
+        CrewHistory crewHistory = histories.get(name);
+        crewHistory.add(time);
     }
 
     public boolean notContains(final String nickname) {
-        return !logs.containsKey(nickname);
+        return !histories.containsKey(nickname);
     }
 
-    public void addLog(final String name, final LocalDateTime time) {
+    public void addHistory(final String name, final LocalDateTime time) {
         checkTime(time);
-        CrewLog crewLog = getCrewLog(name);
-        crewLog.add(time);
+        CrewHistory crewHistory = getCrewHistory(name);
+        crewHistory.add(time);
     }
 
     public LocalDateTime modifyTime(final String nickname, final LocalDateTime time) {
         checkTime(time);
-        CrewLog crewLog = getCrewLog(nickname);
-        return crewLog.modify(time);
+        CrewHistory crewHistory = getCrewHistory(nickname);
+        return crewHistory.modify(time);
     }
 
-    public CrewLog getCrewLog(final String name) {
+    public CrewHistory getCrewHistory(final String name) {
         if (notContains(name)) {
             throw new CustomIllegalArgumentException(INVALID_NICKNAME);
         }
-        return logs.get(name);
+        return histories.get(name);
     }
 
     public void checkDate(final LocalDateTime date) {
@@ -69,7 +69,7 @@ public class CrewLogs {
     }
 
     public Map<String, AttendanceResult> makeSortedResults(int today) {
-        Map<String, AttendanceResult> results = logs.entrySet().stream()
+        Map<String, AttendanceResult> results = histories.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().makeResult(today)));
         return sort(results);
     }
