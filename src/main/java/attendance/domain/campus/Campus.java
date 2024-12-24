@@ -24,8 +24,8 @@ public class Campus {
     }
 
     private boolean isNotOperationTime(final LocalTime time) {
-        LocalTime startTime = LocalTime.of(START_HOUR, 0);
-        LocalTime endTime = LocalTime.of(END_HOUR, 0);
+        LocalTime startTime = LocalTime.MIN.withHour(START_HOUR);
+        LocalTime endTime = LocalTime.MIN.withHour(END_HOUR);
         return time.equals(startTime) || time.equals(endTime)
                 || (time.isAfter(startTime) && time.isBefore(endTime));
     }

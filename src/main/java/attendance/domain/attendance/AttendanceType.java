@@ -25,7 +25,7 @@ public enum AttendanceType {
 
     private static long calculateDifference(final LocalDateTime attendanceTime) {
         int startHour = CampusEducationTime.getStartHour(attendanceTime);
-        LocalTime startTime = LocalTime.of(startHour, 0);
+        LocalTime startTime = LocalTime.MIN.withHour(startHour);
         return ChronoUnit.MINUTES.between(startTime, attendanceTime.toLocalTime());
     }
 
