@@ -15,7 +15,7 @@ public class Campus {
         if (isNotOperationTime(time)) {
             return;
         }
-        throw new CustomIllegalArgumentException(ErrorMessage.INVALID_CAMPUS_OPERATION_TIME);
+        throw new CustomIllegalArgumentException(ErrorMessage.INVALID_ATTENDANCE_CAMPUS_OPERATION_TIME);
     }
 
     public boolean isNotOperationDay(final LocalDateTime localDate) {
