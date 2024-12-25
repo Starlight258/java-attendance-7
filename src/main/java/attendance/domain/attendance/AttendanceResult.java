@@ -2,6 +2,7 @@ package attendance.domain.attendance;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AttendanceResult {
 
@@ -32,5 +33,18 @@ public class AttendanceResult {
 
     public int calculateLateCountWithoutAbsent() {
         return getLateCount() % LATE_LIMIT;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (!(o instanceof AttendanceResult that)) {
+            return false;
+        }
+        return Objects.equals(result, that.result);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(result);
     }
 }
