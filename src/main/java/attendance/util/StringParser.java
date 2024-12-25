@@ -20,9 +20,6 @@ public class StringParser {
         }
     }
 
-    /**
-     * 구분자로 문자열을 분리하여 리스트로 반환
-     */
     public static List<String> parseByDelimiter(String input, String delimiter) {
         return Arrays.stream(input.split(delimiter, CONTAINS_EMPTY))
                 .map(String::strip)

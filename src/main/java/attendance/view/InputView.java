@@ -10,26 +10,26 @@ import java.time.LocalTime;
 public class InputView {
 
     public String readFunction() {
-        return readLine(ErrorMessage.INVALID_FORMAT);
+        return readLine();
     }
 
     public String readNickname() {
-        return readLine(ErrorMessage.INVALID_FORMAT);
+        return readLine();
     }
 
     public LocalTime readTime() {
-        String line = readLine(ErrorMessage.INVALID_FORMAT);
+        String line = readLine();
         return TimeUtils.toLocalTime(line);
-    }
-
-    private String readLine(ErrorMessage errorMessage) {
-        String line = Console.readLine();
-        InputValidator.validateNotNullOrBlank(line, errorMessage);
-        return line;
     }
 
     public int readModifyDay() {
         String line = Console.readLine();
         return StringParser.parseToInteger(line, ErrorMessage.INVALID_FORMAT);
+    }
+
+    private String readLine() {
+        String line = Console.readLine();
+        InputValidator.validateNotNullOrBlank(line, ErrorMessage.INVALID_FORMAT);
+        return line;
     }
 }

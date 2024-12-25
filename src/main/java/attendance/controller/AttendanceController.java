@@ -63,6 +63,25 @@ public class AttendanceController {
         outputView.showInformAttend(attendanceResponse);
     }
 
+    private void modifyAttendance(final LocalDateTime now) {
+        String nickname = readModifyNickname();
+        LocalDateTime today = readModifyDay(now);
+        LocalDateTime todayTime = readModifyTime(today);
+        ModifyResponse modifyResponse = attendanceService.modifyTime(nickname, todayTime);
+        outputView.showInformModify(modifyResponse);
+    }
+
+    private void checkCrewHistory(final LocalDateTime now) {
+        String nickname = readHistoryNickname();
+        TotalAttendanceResponse totalAttendanceResponse = attendanceService.checkCrewHistory(nickname, now.getDayOfMonth());
+        outputView.showTotalHistories(nickname, totalAttendanceResponse);
+    }
+
+    private void checkDangerCrew(final LocalDateTime now) {
+        List<CrewResponse> crewResponses = attendanceService.checkDangerCrew(now);
+        outputView.showTitleDangerSubject(crewResponses);
+    }
+
     private String readNickname() {
         outputView.showRequestCheckNickname();
         String nickname = inputView.readNickname();
@@ -74,14 +93,6 @@ public class AttendanceController {
         outputView.showRequestCheckAttendanceTime();
         LocalTime attendanceTime = inputView.readTime();
         return TimeUtils.alterTime(now.toLocalDate(), attendanceTime);
-    }
-
-    private void modifyAttendance(final LocalDateTime now) {
-        String nickname = readModifyNickname();
-        LocalDateTime today = readModifyDay(now);
-        LocalDateTime todayTime = readModifyTime(today);
-        ModifyResponse modifyResponse = attendanceService.modifyTime(nickname, todayTime);
-        outputView.showInformModify(modifyResponse);
     }
 
     private String readModifyNickname() {
@@ -105,21 +116,10 @@ public class AttendanceController {
         return TimeUtils.alterTime(today.toLocalDate(), time);
     }
 
-    private void checkCrewHistory(final LocalDateTime now) {
-        String nickname = readHistoryNickname();
-        TotalAttendanceResponse totalAttendanceResponse = attendanceService.checkCrewHistory(nickname, now.getDayOfMonth());
-        outputView.showTotalHistories(nickname, totalAttendanceResponse);
-    }
-
     private String readHistoryNickname() {
         outputView.showRequestHistoryNickname();
         String nickname = inputView.readNickname();
         attendanceService.checkNickname(nickname);
         return nickname;
-    }
-
-    private void checkDangerCrew(final LocalDateTime now) {
-        List<CrewResponse> crewResponses = attendanceService.checkDangerCrew(now);
-        outputView.showTitleDangerSubject(crewResponses);
     }
 }

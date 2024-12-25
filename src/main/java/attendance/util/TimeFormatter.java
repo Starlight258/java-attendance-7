@@ -16,13 +16,11 @@ public class TimeFormatter {
         );
     }
 
-    // 12월 13일 금요일
     public static String makeDateMessage(final LocalDateTime time) {
         return time.format(
                 DateTimeFormatter.ofPattern(DATE_FORMAT));
     }
 
-    // 12월 13일 금요일 09:59
     public static String makeDateTimeMessage(final LocalDateTime time) {
         return time.format(
                 DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));

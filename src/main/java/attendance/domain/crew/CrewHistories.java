@@ -77,11 +77,22 @@ public class CrewHistories {
         return sort(results);
     }
 
+    private void checkTime(final LocalDateTime time) {
+        campus.checkOperationTime(time.toLocalTime());
+    }
+
     private Map<String, AttendanceResult> sort(final Map<String, AttendanceResult> results) {
         return results.entrySet().stream()
                 .sorted(createAttendanceComparator())
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (oldVal, newVal) -> newVal,
                         LinkedHashMap::new));
+    }
+
+    private List<Integer> getWeekday(LocalDate now) {
+        return IntStream.range(FIRST_DAY, now.getDayOfMonth())
+                .filter(day -> !campus.isNotOperationDay(TimeUtils.alterDay(now, day)))
+                .boxed()
+                .toList();
     }
 
     private Comparator<Entry<String, AttendanceResult>> createAttendanceComparator() {
@@ -90,16 +101,5 @@ public class CrewHistories {
                 .reversed()
                 .thenComparing(entry -> entry.getValue().calculateLateCountWithoutAbsent(), Collections.reverseOrder())
                 .thenComparing(Entry::getKey);
-    }
-
-    private void checkTime(final LocalDateTime time) {
-        campus.checkOperationTime(time.toLocalTime());
-    }
-
-    private List<Integer> getWeekday(LocalDate now) {
-        return IntStream.range(FIRST_DAY, now.getDayOfMonth())
-                .filter(day -> !campus.isNotOperationDay(TimeUtils.alterDay(now, day)))
-                .boxed()
-                .toList();
     }
 }

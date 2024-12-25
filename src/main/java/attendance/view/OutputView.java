@@ -91,6 +91,19 @@ public class OutputView {
         showHistoryResult(responses);
     }
 
+    public void showTitleDangerSubject(final List<CrewResponse> responses) {
+        showln(LINE + TITLE_DANGER_SUBJECT);
+        responses.stream()
+                .map(response -> format(INFORM_DANGER_SUBJECT, response.name(), response.absentCount(),
+                        response.lateCount(),
+                        response.subjectType()))
+                .forEach(this::showln);
+    }
+
+    public void showBlank() {
+        showln("");
+    }
+
     private void showHistory(final String name, final TotalAttendanceResponse responses) {
         showln(format(TITLE_HISTORY, name));
         responses.responses().stream()
@@ -112,16 +125,8 @@ public class OutputView {
             return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateMessage(response.time()) + EMPTY_HISTORY,
                     AttendanceType.결석.name());
         }
-        return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateTimeMessage(response.time()), response.attendanceType());
-    }
-
-    public void showTitleDangerSubject(final List<CrewResponse> responses) {
-        showln(LINE + TITLE_DANGER_SUBJECT);
-        responses.stream()
-                .map(response -> format(INFORM_DANGER_SUBJECT, response.name(), response.absentCount(),
-                        response.lateCount(),
-                        response.subjectType()))
-                .forEach(this::showln);
+        return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateTimeMessage(response.time()),
+                response.attendanceType());
     }
 
     private String format(String format, Object... args) {
@@ -130,9 +135,5 @@ public class OutputView {
 
     private void showln(String message) {
         System.out.println(message);
-    }
-
-    public void showBlank() {
-        showln("");
     }
 }
