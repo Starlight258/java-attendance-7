@@ -6,6 +6,7 @@ import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
 import attendance.domain.attendance.AttendanceResult;
 import attendance.domain.attendance.AttendanceState;
 import attendance.exception.CustomIllegalArgumentException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class CrewHistory {
         history.put(input.getDayOfMonth(), AttendanceState.makeAttendance(input));
     }
 
-    public AttendanceState findHistory(final LocalDateTime input) {
+    public AttendanceState findHistory(final LocalDate input) {
         if (isNotExist(input)) {
             throw new CustomIllegalArgumentException(INVALID_DAY_FUTURE);
         }
@@ -38,7 +39,7 @@ public class CrewHistory {
     }
 
     public LocalDateTime modify(final LocalDateTime todayTime) {
-        AttendanceState previousHistory = findHistory(todayTime);
+        AttendanceState previousHistory = findHistory(todayTime.toLocalDate());
         history.put(todayTime.getDayOfMonth(), AttendanceState.makeAttendance(todayTime));
         return previousHistory.attendanceTime();
     }
@@ -68,7 +69,7 @@ public class CrewHistory {
         return history.containsKey(day) && !history.get(day).isDefaultValue();
     }
 
-    private boolean isNotExist(final LocalDateTime input) {
+    private boolean isNotExist(final LocalDate input) {
         int day = input.getDayOfMonth();
         return !history.containsKey(day);
     }

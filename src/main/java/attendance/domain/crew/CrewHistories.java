@@ -32,13 +32,11 @@ public class CrewHistories {
         this.campus = campus;
     }
 
-    public void initialize(final LocalDateTime now, final String name, final LocalDateTime time) {
-        checkTime(time);
-        if (notContains(name)) {
-            histories.put(name, new CrewHistory(now, getWeekday(now.toLocalDate())));
-        }
+    public void loadFromFile(final LocalDateTime loadTime, final String name, final LocalDateTime today) {
+        checkOperationTime(loadTime);
+        initialize(name, today);
         CrewHistory crewHistory = histories.get(name);
-        crewHistory.add(time);
+        crewHistory.add(loadTime);
     }
 
     public boolean notContains(final String nickname) {
@@ -46,13 +44,13 @@ public class CrewHistories {
     }
 
     public void addHistory(final String name, final LocalDateTime time) {
-        checkTime(time);
+        checkOperationTime(time);
         CrewHistory crewHistory = getCrewHistory(name);
         crewHistory.add(time);
     }
 
     public LocalDateTime modifyTime(final String nickname, final LocalDateTime time) {
-        checkTime(time);
+        checkOperationTime(time);
         CrewHistory crewHistory = getCrewHistory(nickname);
         return crewHistory.modify(time);
     }
@@ -71,14 +69,20 @@ public class CrewHistories {
         }
     }
 
-    public Map<String, AttendanceResult> makeSortedResults(int today) {
+    public Map<String, AttendanceResult> sortResults(int today) {
         Map<String, AttendanceResult> results = histories.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().makeResult(today)));
         return sort(results);
     }
 
-    private void checkTime(final LocalDateTime time) {
+    private void checkOperationTime(final LocalDateTime time) {
         campus.checkOperationTime(time.toLocalTime());
+    }
+
+    private void initialize(final String name, final LocalDateTime today) {
+        if (notContains(name)) {
+            histories.put(name, new CrewHistory(today, getWeekday(today.toLocalDate())));
+        }
     }
 
     private Map<String, AttendanceResult> sort(final Map<String, AttendanceResult> results) {

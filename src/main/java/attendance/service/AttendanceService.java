@@ -60,7 +60,7 @@ public class AttendanceService {
     }
 
     public List<CrewResponse> checkDangerCrew(final LocalDateTime now) {
-        Map<String, AttendanceResult> results = crewHistories.makeSortedResults(now.getDayOfMonth());
+        Map<String, AttendanceResult> results = crewHistories.sortResults(now.getDayOfMonth());
         return results.entrySet().stream()
                 .map(entry -> CrewResponse.of(entry.getKey(), entry.getValue()))
                 .filter(response -> !Objects.equals(response.subjectType(), CrewType.성실.name()))

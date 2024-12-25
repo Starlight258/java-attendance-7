@@ -37,7 +37,7 @@ public class Initializer {
         List<String> tokens = parseByDelimiter(attendance);
         String name = tokens.getFirst();
         LocalDateTime attendanceTime = TimeUtils.toLocalDateTime(tokens.getLast());
-        crewHistories.initialize(now, name, attendanceTime);
+        crewHistories.loadFromFile(attendanceTime, name, now);
     }
 
     private List<String> parseByDelimiter(final String token) {
