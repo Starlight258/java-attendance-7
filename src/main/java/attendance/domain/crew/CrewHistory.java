@@ -38,9 +38,9 @@ public class CrewHistory {
         return history.get(input.getDayOfMonth());
     }
 
-    public LocalDateTime modify(final LocalDateTime todayTime) {
-        AttendanceState previousHistory = findHistory(todayTime.toLocalDate());
-        history.put(todayTime.getDayOfMonth(), AttendanceState.makeAttendance(todayTime));
+    public LocalDateTime modify(final LocalDateTime time) {
+        AttendanceState previousHistory = findHistory(time.toLocalDate());
+        history.put(time.getDayOfMonth(), AttendanceState.makeAttendance(time));
         return previousHistory.attendanceTime();
     }
 

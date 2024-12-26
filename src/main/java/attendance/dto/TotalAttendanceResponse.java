@@ -8,9 +8,9 @@ public record TotalAttendanceResponse(List<AttendanceResponse> responses, int at
                                       int absentCount, String subject) {
     public static TotalAttendanceResponse from(final List<AttendanceResponse> responses, AttendanceResult result) {
         int attendanceCount = result.getAttendanceCount();
-        int lateCount = result.getLateCount();
         int absentCount = result.getAbsentCount();
-        CrewType crewType = CrewType.from(lateCount, absentCount);
+        int lateCount = result.getLateCount();
+        CrewType crewType = CrewType.from(absentCount, lateCount);
         return new TotalAttendanceResponse(responses, attendanceCount,
                 lateCount, absentCount, crewType.name());
     }
