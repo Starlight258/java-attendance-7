@@ -105,10 +105,10 @@ public class AttendanceController {
 
     private LocalDate readModifyDay(final LocalDateTime now) {
         outputView.showRequestModifyDay();
-        int day = inputView.readModifyDay();
-        LocalDate today = TimeUtils.alterDay(now.toLocalDate(), day);
-        attendanceService.checkModifyDate(now.toLocalDate(), today);
-        return today;
+        int modifyDay = inputView.readModifyDay();
+        LocalDate modifyDate = TimeUtils.alterDay(now.toLocalDate(), modifyDay);
+        attendanceService.checkModifyDate(now.toLocalDate(), modifyDate);
+        return modifyDate;
     }
 
     private LocalDateTime readModifyTime(final LocalDate today) {

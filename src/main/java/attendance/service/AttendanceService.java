@@ -30,11 +30,11 @@ public class AttendanceService {
         crewHistories.checkDate(date);
     }
 
-    public void checkModifyDate(final LocalDate now, final LocalDate date) {
-        if (date.isAfter(now)) {
+    public void checkModifyDate(final LocalDate today, final LocalDate modifyDate) {
+        if (modifyDate.isAfter(today)) {
             throw new CustomIllegalArgumentException(ErrorMessage.INVALID_DAY_FUTURE);
         }
-        crewHistories.checkDate(date);
+        crewHistories.checkDate(modifyDate);
     }
 
     public void checkNickname(final String nickname) {
