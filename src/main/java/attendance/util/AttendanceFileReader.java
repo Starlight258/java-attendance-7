@@ -48,5 +48,4 @@ public class AttendanceFileReader {
     private static boolean isTerminated(final String input) {
         return input == null;
     }
-
 }

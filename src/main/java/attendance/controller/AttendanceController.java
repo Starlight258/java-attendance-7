@@ -93,7 +93,7 @@ public class AttendanceController {
     private LocalDateTime readTime(final LocalDateTime now) {
         outputView.showRequestCheckAttendanceTime();
         LocalTime attendanceTime = inputView.readTime();
-        return TimeUtils.alterTime(now.toLocalDate(), attendanceTime);
+        return LocalDateTime.of(now.toLocalDate(), attendanceTime);
     }
 
     private String readModifyNickname() {
@@ -114,7 +114,7 @@ public class AttendanceController {
     private LocalDateTime readModifyTime(final LocalDate today) {
         outputView.showRequestModifyTime();
         LocalTime time = inputView.readTime();
-        return TimeUtils.alterTime(today, time);
+        return LocalDateTime.of(today, time);
     }
 
     private String readHistoryNickname() {

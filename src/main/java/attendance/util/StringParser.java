@@ -25,5 +25,4 @@ public class StringParser {
                 .map(String::strip)
                 .toList();
     }
-
 }

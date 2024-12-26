@@ -16,5 +16,4 @@ public class FileContentParser {
         }
         return lines.subList(HEADER_LINES, lines.size());
     }
-
 }

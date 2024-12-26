@@ -9,6 +9,6 @@ public record ModifyResponse(String previousTime, String previousType, String cu
     public static ModifyResponse of(LocalDateTime previousTime, LocalDateTime currentTime) {
         return new ModifyResponse(TimeFormatter.makeDateTimeMessage(previousTime),
                 AttendanceType.getAttendanceType(previousTime).name(),
-                TimeFormatter.makeTimeMessage(currentTime), AttendanceType.getAttendanceType(currentTime).name());
+                TimeFormatter.makeTimeMessage(currentTime.toLocalTime()), AttendanceType.getAttendanceType(currentTime).name());
     }
 }

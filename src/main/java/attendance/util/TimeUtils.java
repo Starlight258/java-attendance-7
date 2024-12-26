@@ -31,10 +31,6 @@ public class TimeUtils {
         }
     }
 
-    public static LocalDateTime alterTime(final LocalDate today, final LocalTime time) {
-        return LocalDateTime.of(today, time);
-    }
-
     public static LocalDate alterDay(final LocalDate today, final int day) {
         return today.withDayOfMonth(day);
     }

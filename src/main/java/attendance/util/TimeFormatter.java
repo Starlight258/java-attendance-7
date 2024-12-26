@@ -2,6 +2,7 @@ package attendance.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class TimeFormatter {
@@ -11,7 +12,7 @@ public class TimeFormatter {
     private static final String BLANK = " ";
     private static final String DATE_TIME_FORMAT = DATE_FORMAT + BLANK + TIME_FORMAT;
 
-    public static String makeTimeMessage(final LocalDateTime time) {
+    public static String makeTimeMessage(final LocalTime time) {
         return time.format(
                 DateTimeFormatter.ofPattern(TIME_FORMAT)
         );
