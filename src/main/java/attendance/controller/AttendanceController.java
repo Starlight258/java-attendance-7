@@ -10,6 +10,7 @@ import attendance.util.TimeUtils;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -30,7 +31,7 @@ public class AttendanceController {
     public void process() {
         while (true) {
             LocalDateTime now = DateTimes.now();
-            outputView.showTitleWelcome(now);
+            outputView.showTitleWelcome(now.toLocalDate());
             Command command = Command.from(inputView.readFunction());
             processAttendance(now, command);
             if (command == Command.QUIT) {
@@ -56,7 +57,7 @@ public class AttendanceController {
     }
 
     private void attend(final LocalDateTime now) {
-        attendanceService.checkAttendanceDate(now);
+        attendanceService.checkAttendanceDate(now.toLocalDate());
         String nickname = readNickname();
         LocalDateTime todayTime = readTime(now);
         AttendanceResponse attendanceResponse = attendanceService.attend(nickname, todayTime);
@@ -65,7 +66,7 @@ public class AttendanceController {
 
     private void modifyAttendance(final LocalDateTime now) {
         String nickname = readModifyNickname();
-        LocalDateTime today = readModifyDay(now);
+        LocalDate today = readModifyDay(now);
         LocalDateTime todayTime = readModifyTime(today);
         ModifyResponse modifyResponse = attendanceService.modifyTime(nickname, todayTime);
         outputView.showInformModify(modifyResponse);
@@ -102,18 +103,18 @@ public class AttendanceController {
         return nickname;
     }
 
-    private LocalDateTime readModifyDay(final LocalDateTime now) {
+    private LocalDate readModifyDay(final LocalDateTime now) {
         outputView.showRequestModifyDay();
         int day = inputView.readModifyDay();
-        LocalDateTime today = TimeUtils.alterDay(now.toLocalDate(), day);
-        attendanceService.checkModifyDate(now, today);
+        LocalDate today = TimeUtils.alterDay(now.toLocalDate(), day);
+        attendanceService.checkModifyDate(now.toLocalDate(), today);
         return today;
     }
 
-    private LocalDateTime readModifyTime(final LocalDateTime today) {
+    private LocalDateTime readModifyTime(final LocalDate today) {
         outputView.showRequestModifyTime();
         LocalTime time = inputView.readTime();
-        return TimeUtils.alterTime(today.toLocalDate(), time);
+        return TimeUtils.alterTime(today, time);
     }
 
     private String readHistoryNickname() {

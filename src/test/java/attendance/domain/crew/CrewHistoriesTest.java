@@ -180,13 +180,13 @@ class CrewHistoriesTest {
         void 운영일이_아닐_경우_예외가_발생한다() {
             // Given
             CrewHistories crewHistories = makeHistories();
-            LocalDateTime attendTime = LocalDateTime.of(2024, 12, 1, 9, 0);
+            LocalDate today = LocalDate.of(2024, 12, 1);
 
             // When
-            assertThatThrownBy(() -> crewHistories.checkDate(attendTime))
+            assertThatThrownBy(() -> crewHistories.checkDate(today))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageStartingWith(ErrorPrefix.format(""))
-                    .hasMessageContaining(INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(attendTime)));
+                    .hasMessageContaining(INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(today)));
         }
     }
 

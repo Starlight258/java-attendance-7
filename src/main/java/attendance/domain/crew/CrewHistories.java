@@ -62,7 +62,7 @@ public class CrewHistories {
         return histories.get(name);
     }
 
-    public void checkDate(final LocalDateTime date) {
+    public void checkDate(final LocalDate date) {
         if (campus.isNotOperationDay(date)) {
             throw new CustomIllegalArgumentException(
                     INVALID_ATTENDANCE_DAY.getMessage(TimeFormatter.makeDateMessage(date)));

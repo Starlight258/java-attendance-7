@@ -8,8 +8,8 @@ import java.time.LocalTime;
 public record AttendanceState(LocalDateTime attendanceTime, AttendanceType attendanceType) {
 
     public static AttendanceState makeDefault(final LocalDate now, final int day) {
-        LocalDateTime time = TimeUtils.alterDay(now, day);
-        return new AttendanceState(time, AttendanceType.getAttendanceType(time));
+        LocalDateTime defaultTime = LocalDateTime.of(TimeUtils.alterDay(now, day), LocalTime.MIN);
+        return new AttendanceState(defaultTime, AttendanceType.getAttendanceType(defaultTime));
     }
 
     public static AttendanceState makeAttendance(final LocalDateTime time) {

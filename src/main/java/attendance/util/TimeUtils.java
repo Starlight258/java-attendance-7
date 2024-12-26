@@ -35,7 +35,7 @@ public class TimeUtils {
         return LocalDateTime.of(today, time);
     }
 
-    public static LocalDateTime alterDay(final LocalDate today, final int day) {
-        return today.withDayOfMonth(day).atStartOfDay();
+    public static LocalDate alterDay(final LocalDate today, final int day) {
+        return today.withDayOfMonth(day);
     }
 }

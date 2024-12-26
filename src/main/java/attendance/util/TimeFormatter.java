@@ -1,5 +1,6 @@
 package attendance.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,7 +17,7 @@ public class TimeFormatter {
         );
     }
 
-    public static String makeDateMessage(final LocalDateTime time) {
+    public static String makeDateMessage(final LocalDate time) {
         return time.format(
                 DateTimeFormatter.ofPattern(DATE_FORMAT));
     }

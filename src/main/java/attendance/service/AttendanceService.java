@@ -12,6 +12,7 @@ import attendance.dto.ModifyResponse;
 import attendance.dto.TotalAttendanceResponse;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.exception.ErrorMessage;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +26,12 @@ public class AttendanceService {
         this.crewHistories = crewHistories;
     }
 
-    public void checkAttendanceDate(final LocalDateTime date) {
+    public void checkAttendanceDate(final LocalDate date) {
         crewHistories.checkDate(date);
     }
 
-    public void checkModifyDate(final LocalDateTime now, final LocalDateTime date) {
-        if (date.toLocalDate().isAfter(now.toLocalDate())) {
+    public void checkModifyDate(final LocalDate now, final LocalDate date) {
+        if (date.isAfter(now)) {
             throw new CustomIllegalArgumentException(ErrorMessage.INVALID_DAY_FUTURE);
         }
         crewHistories.checkDate(date);

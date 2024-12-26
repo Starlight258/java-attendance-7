@@ -5,7 +5,7 @@ import static attendance.support.CustomAssert.assertIllegalArgument;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,17 +50,17 @@ class CampusTest {
         assertIllegalArgument(() -> campus.checkOperationTime(time), INVALID_ATTENDANCE_CAMPUS_OPERATION_TIME);
     }
 
-    @ParameterizedTest(name = "날짜/시간 : {0}, 운영 여부 : {1}")
+    @ParameterizedTest(name = "날짜 : {0}, 운영 여부 : {1}")
     @CsvSource({
-            "2024-12-02T09:00, false",
-            "2024-12-07T09:00, true",
-            "2024-12-08T09:00, true",
-            "2024-12-25T09:00, true",
+            "2024-12-02, false",
+            "2024-12-07, true",
+            "2024-12-08, true",
+            "2024-12-25, true",
     })
-    void 주말_또는_공휴일은_운영하지_않는다(final LocalDateTime now, boolean expected) {
+    void 주말_또는_공휴일은_운영하지_않는다(final LocalDate today, boolean expected) {
         // Given
 
         // When & Then
-        assertThat(campus.isNotOperationDay(now)).isEqualTo(expected);
+        assertThat(campus.isNotOperationDay(today)).isEqualTo(expected);
     }
 }

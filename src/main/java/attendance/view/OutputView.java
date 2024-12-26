@@ -7,7 +7,7 @@ import attendance.dto.CrewResponse;
 import attendance.dto.ModifyResponse;
 import attendance.dto.TotalAttendanceResponse;
 import attendance.util.TimeFormatter;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class OutputView {
     private static final String TITLE_DANGER_SUBJECT = "제적 위험자 조회 결과";
     private static final String INFORM_DANGER_SUBJECT = "- %s: 결석 %d회, 지각 %d회 (%s)";
 
-    public void showTitleWelcome(final LocalDateTime today) {
+    public void showTitleWelcome(final LocalDate today) {
         showln(format(TITLE_WELCOME, TimeFormatter.makeDateMessage(today)));
     }
 
@@ -122,7 +122,8 @@ public class OutputView {
 
     private String makeHistoryMessage(final AttendanceResponse response) {
         if (LocalTime.MIN.equals(response.time().toLocalTime())) {
-            return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateMessage(response.time()) + EMPTY_HISTORY,
+            return format(INFORM_DAILY_HISTORY,
+                    TimeFormatter.makeDateMessage(response.time().toLocalDate()) + EMPTY_HISTORY,
                     AttendanceType.결석.name());
         }
         return format(INFORM_DAILY_HISTORY, TimeFormatter.makeDateTimeMessage(response.time()),
