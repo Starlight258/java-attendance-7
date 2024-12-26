@@ -17,45 +17,40 @@ class AttendanceResultTest {
         attendanceResult = makeResult();
     }
 
-    @DisplayName("출석 횟수를 조회한다.")
     @Test
-    void getAttendanceCount() {
+    void 출석_횟수를_조회한다() {
         // Given
 
         // When & Then
         assertThat(attendanceResult.getAttendanceCount()).isEqualTo(12);
     }
 
-    @DisplayName("지각 횟수를 조회한다.")
     @Test
-    void getLateCount() {
+    void 지각_횟수를_조회한다() {
         // Given
 
         // When & Then
         assertThat(attendanceResult.getLateCount()).isEqualTo(4);
     }
 
-    @DisplayName("결석 횟수를 조회한다.")
     @Test
-    void getAbsentCount() {
+    void 결석_횟수를_조회한다() {
         // Given
 
         // When & Then
         assertThat(attendanceResult.getAbsentCount()).isEqualTo(3);
     }
 
-    @DisplayName("지각 3회를 결석으로 간주하여 결석 횟수를 조회한다.")
     @Test
-    void calculateAbsentCountWithLate() {
+    void 지각_3회를_결석으로_간주하여_결석_횟수를_조회한다() {
         // Given
 
         // When & Then
         assertThat(attendanceResult.calculateAbsentCountWithLate()).isEqualTo(4);
     }
 
-    @DisplayName("지각 3회를 결석으로 간주한 횟수를 제외한 지각 횟수를 조회한다.")
     @Test
-    void calculateLateCountWithoutAbsent() {
+    void 지각_3회를_결석으로_간주한_횟수를_제외한_지각_횟수를_조회한다() {
         // Given
 
         // When & Then

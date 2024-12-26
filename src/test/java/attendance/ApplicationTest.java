@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("통합 테스트")
 class ApplicationTest extends NsTest {
+
     @Test
     void 잘못된_형식_예외_테스트() {
         assertNowTest(
