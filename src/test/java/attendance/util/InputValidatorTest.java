@@ -4,10 +4,12 @@ import static attendance.exception.ErrorMessage.INVALID_FORMAT;
 import static attendance.support.CustomAssert.assertIllegalArgument;
 
 import attendance.exception.ErrorMessage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@DisplayName("입력값 검증기 테스트")
 class InputValidatorTest {
 
     @ParameterizedTest
