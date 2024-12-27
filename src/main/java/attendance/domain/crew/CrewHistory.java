@@ -6,6 +6,7 @@ import static attendance.exception.ErrorMessage.INVALID_DUPLICATE_ATTENDANCE;
 import attendance.domain.attendance.AttendanceResult;
 import attendance.domain.attendance.AttendanceState;
 import attendance.exception.CustomIllegalArgumentException;
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -44,13 +45,14 @@ public class CrewHistory {
         return previousHistory.attendanceTime();
     }
 
-    public AttendanceResult makeResult(int today) {
-        return new AttendanceResult(getAttendanceStateUntilYesterday(today).stream()
+    public AttendanceResult makeResult() {
+        return new AttendanceResult(getAttendanceStateUntilYesterday().stream()
                 .collect(Collectors.toMap(AttendanceState::attendanceType, v -> INCREASE_UNIT,
                         Integer::sum, LinkedHashMap::new)));
     }
 
-    public List<AttendanceState> getAttendanceStateUntilYesterday(final int today) {
+    public List<AttendanceState> getAttendanceStateUntilYesterday() {
+        int today = DateTimes.now().getDayOfMonth();
         return history.entrySet().stream()
                 .filter(entry -> entry.getKey() != today)
                 .map(Entry::getValue)

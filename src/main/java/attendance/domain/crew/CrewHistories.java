@@ -8,6 +8,7 @@ import attendance.domain.campus.Campus;
 import attendance.exception.CustomIllegalArgumentException;
 import attendance.util.TimeFormatter;
 import attendance.util.TimeUtils;
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -69,9 +70,9 @@ public class CrewHistories {
         }
     }
 
-    public Map<String, AttendanceResult> sortResults(int today) {
+    public Map<String, AttendanceResult> sortResults() {
         Map<String, AttendanceResult> results = histories.entrySet().stream()
-                .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().makeResult(today)));
+                .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().makeResult()));
         return sort(results);
     }
 

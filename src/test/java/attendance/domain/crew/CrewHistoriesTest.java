@@ -203,7 +203,7 @@ class CrewHistoriesTest {
         addJjangSuHistory(crewHistories, times);
 
         // When
-        Map<String, AttendanceResult> results = crewHistories.sortResults(12);
+        Map<String, AttendanceResult> results = crewHistories.sortResults();
 
         // Then
         assertThat(results).containsExactlyInAnyOrderEntriesOf(createExpectedResults());

@@ -112,7 +112,7 @@ class CrewHistoryTest {
             int today = 5;
 
             // When
-            AttendanceResult attendanceResult = crewHistory.makeResult(today);
+            AttendanceResult attendanceResult = crewHistory.makeResult();
             System.out.println(attendanceResult);
 
             // Then
@@ -134,7 +134,7 @@ class CrewHistoryTest {
             int today = 5;
 
             // When
-            List<AttendanceState> states = crewHistory.getAttendanceStateUntilYesterday(today);
+            List<AttendanceState> states = crewHistory.getAttendanceStateUntilYesterday();
 
             // Then
             assertAll(

@@ -1,8 +1,8 @@
 package attendance.controller;
 
 import attendance.domain.command.Command;
-import attendance.dto.CrewResponse;
 import attendance.dto.AttendanceResponse;
+import attendance.dto.CrewResponse;
 import attendance.dto.ModifyResponse;
 import attendance.dto.TotalAttendanceResponse;
 import attendance.service.AttendanceService;
@@ -30,10 +30,9 @@ public class AttendanceController {
 
     public void process() {
         while (true) {
-            LocalDateTime now = DateTimes.now();
-            outputView.showTitleWelcome(now.toLocalDate());
+            outputView.showTitleWelcome(DateTimes.now().toLocalDate());
             Command command = Command.from(inputView.readFunction());
-            processAttendance(now, command);
+            processAttendance(command);
             if (command == Command.QUIT) {
                 return;
             }
@@ -41,22 +40,23 @@ public class AttendanceController {
         }
     }
 
-    private void processAttendance(final LocalDateTime now, final Command command) {
+    private void processAttendance(final Command command) {
         if (command == Command.ATTENDANCE) {
-            attend(now);
+            attend();
         }
         if (command == Command.ATTENDANCE_MODIFY) {
-            modifyAttendance(now);
+            modifyAttendance();
         }
         if (command == Command.ATTENDANCE_CREW_HISTORY) {
-            checkCrewHistory(now);
+            checkCrewHistory();
         }
         if (command == Command.ATTENDANCE_DANGER) {
-            checkDangerCrew(now);
+            checkDangerCrew();
         }
     }
 
-    private void attend(final LocalDateTime now) {
+    private void attend() {
+        LocalDateTime now = DateTimes.now();
         attendanceService.checkAttendanceDate(now.toLocalDate());
         String nickname = readNickname();
         LocalDateTime todayTime = readTime(now);
@@ -64,22 +64,22 @@ public class AttendanceController {
         outputView.showInformAttend(attendanceResponse);
     }
 
-    private void modifyAttendance(final LocalDateTime now) {
+    private void modifyAttendance() {
         String nickname = readModifyNickname();
-        LocalDate today = readModifyDay(now);
+        LocalDate today = readModifyDay();
         LocalDateTime todayTime = readModifyTime(today);
         ModifyResponse modifyResponse = attendanceService.modifyTime(nickname, todayTime);
         outputView.showInformModify(modifyResponse);
     }
 
-    private void checkCrewHistory(final LocalDateTime now) {
+    private void checkCrewHistory() {
         String nickname = readHistoryNickname();
-        TotalAttendanceResponse totalAttendanceResponse = attendanceService.checkCrewHistory(nickname, now.getDayOfMonth());
+        TotalAttendanceResponse totalAttendanceResponse = attendanceService.checkCrewHistory(nickname);
         outputView.showTotalHistories(nickname, totalAttendanceResponse);
     }
 
-    private void checkDangerCrew(final LocalDateTime now) {
-        List<CrewResponse> crewResponses = attendanceService.checkDangerCrew(now);
+    private void checkDangerCrew() {
+        List<CrewResponse> crewResponses = attendanceService.checkDangerCrew();
         outputView.showTitleDangerSubject(crewResponses);
     }
 
@@ -103,9 +103,10 @@ public class AttendanceController {
         return nickname;
     }
 
-    private LocalDate readModifyDay(final LocalDateTime now) {
+    private LocalDate readModifyDay() {
         outputView.showRequestModifyDay();
         int modifyDay = inputView.readModifyDay();
+        LocalDateTime now = DateTimes.now();
         LocalDate modifyDate = TimeUtils.alterDay(now.toLocalDate(), modifyDay);
         attendanceService.checkModifyDate(now.toLocalDate(), modifyDate);
         return modifyDate;

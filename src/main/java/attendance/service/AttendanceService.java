@@ -53,23 +53,23 @@ public class AttendanceService {
         return ModifyResponse.of(previousTime, todayTime);
     }
 
-    public TotalAttendanceResponse checkCrewHistory(final String nickname, final int day) {
+    public TotalAttendanceResponse checkCrewHistory(final String nickname) {
         CrewHistory crewHistory = crewHistories.getCrewHistory(nickname);
-        List<AttendanceResponse> responses = convertToInformResponses(day, crewHistory);
-        AttendanceResult result = crewHistory.makeResult(day);
+        List<AttendanceResponse> responses = convertToInformResponses(crewHistory);
+        AttendanceResult result = crewHistory.makeResult();
         return TotalAttendanceResponse.from(responses, result);
     }
 
-    public List<CrewResponse> checkDangerCrew(final LocalDateTime now) {
-        Map<String, AttendanceResult> results = crewHistories.sortResults(now.getDayOfMonth());
+    public List<CrewResponse> checkDangerCrew() {
+        Map<String, AttendanceResult> results = crewHistories.sortResults();
         return results.entrySet().stream()
                 .map(entry -> CrewResponse.of(entry.getKey(), entry.getValue()))
                 .filter(response -> !Objects.equals(response.subjectType(), CrewType.성실.name()))
                 .toList();
     }
 
-    private List<AttendanceResponse> convertToInformResponses(final int day, final CrewHistory crewHistory) {
-        return crewHistory.getAttendanceStateUntilYesterday(day).stream()
+    private List<AttendanceResponse> convertToInformResponses(final CrewHistory crewHistory) {
+        return crewHistory.getAttendanceStateUntilYesterday().stream()
                 .map(value -> AttendanceResponse.of(value.attendanceTime()))
                 .toList();
     }
